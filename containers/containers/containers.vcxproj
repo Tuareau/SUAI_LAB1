@@ -20,6 +20,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\containers.cpp" />
+    <ClCompile Include="src\AbstractQueue.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Element.h" />
+    <ClInclude Include="src\AbstractQueue.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
