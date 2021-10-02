@@ -22,10 +22,13 @@
     <ClCompile Include="src\Containers.cpp" />
     <ClCompile Include="src\Deque.cpp" />
     <ClCompile Include="src\ForwardList.cpp" />
+    <ClCompile Include="src\Keeper.cpp" />
     <ClCompile Include="src\Stack.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Array.h" />
     <ClInclude Include="src\ForwardList.h" />
+    <ClInclude Include="src\Keeper.h" />
     <ClInclude Include="src\LinkedElement.h" />
     <ClInclude Include="src\Deque.h" />
     <ClInclude Include="src\Element.h" />
