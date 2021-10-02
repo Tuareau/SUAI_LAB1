@@ -151,65 +151,53 @@ LinkedElement & Deque::operator[](size_t idx) noexcept {
 	return *curr;
 }
 
-Deque::Iterator Deque::begin() const {
-	return Iterator(_head);
+void Deque::insert(size_t idx, const LinkedElement & el) {
+	if (idx > _size)
+		throw std::invalid_argument("Deque::insert(): invalid index");
+	if (this->empty()) {
+		push_back(el);
+		return;
+	}
+
+	LinkedElement * curr = _head;
+	while (idx--)
+		curr = curr->right_ptr();
+
+	if (curr == _head) {
+		if (!idx)
+			push_front(el);
+		else
+			push_back(el);
+		return;
+	}
+
+	LinkedElement * element = new LinkedElement(el.value());
+	element->set_left_ptr(curr->left_ptr());
+	curr->left_ptr()->set_right_ptr(element);
+	curr->set_left_ptr(element);
+	element->set_right_ptr(curr);
+
+	_size++; _is_empty = false;
 }
 
-Deque::Iterator Deque::end() const {
-	return Iterator(nullptr);
-}
+void Deque::erase(size_t idx) {
+	if (idx >= _size)
+		throw std::invalid_argument("Deque::erase(): invalid index");
 
+	LinkedElement * curr = _head;
+	while (idx--)
+		curr = curr->right_ptr();
 
+	if (!curr->left_ptr()) {
+		pop_front(); return;
+	}
+	if (!curr->right_ptr()) {
+		pop_back(); return;
+	}
 
-Deque::Iterator::Iterator() : _ptr(nullptr) {}
+	curr->left_ptr()->set_right_ptr(curr->right_ptr());
+	curr->right_ptr()->set_left_ptr(curr->left_ptr());
+	delete curr;
 
-explicit Deque::Iterator::Iterator(LinkedElement * ptr) 
-	: _ptr(ptr) {}
-
-Deque::Iterator::Iterator(const Deque::Iterator & iter) 
-	: _ptr(iter._ptr) {}
-
-Deque::Iterator & Deque::Iterator::operator=(const Deque::Iterator & iter) {
-	_ptr = iter._ptr;
-	return *this;
-}
-
-Deque::Iterator & Deque::Iterator::operator++() {
-	if (!_ptr)
-		throw std::out_of_range("Stack::Iterator: operator++(): ptr was nullptr");
-	_ptr = _ptr->right_ptr();
-	return *this;
-}
-
-Deque::Iterator & Deque::Iterator::operator--() {
-	if (!_ptr)
-		throw std::out_of_range("Stack::Iterator: operator--(): ptr was nullptr");
-	_ptr = _ptr->left_ptr();
-	return *this;
-}
-
-Deque::Iterator Deque::Iterator::operator++(int) {
-	if (!_ptr)
-		throw std::out_of_range("Stack::Iterator: operator++(int): ptr was nullptr");
-	Iterator it(_ptr->right_ptr());
-	return it;
-}
-
-Deque::Iterator Deque::Iterator::operator--(int) {
-	if (!_ptr)
-		throw std::out_of_range("Stack::Iterator: operator--(int): ptr was nullptr");
-	Iterator it(_ptr->left_ptr());
-	return it;
-}
-
-bool Deque::Iterator::operator!=(const Iterator & iter) {
-	return _ptr != iter._ptr;
-}
-
-bool Deque::Iterator::operator==(const Iterator & iter) {
-	return _ptr == iter._ptr;
-}
-
-LinkedElement & Deque::Iterator::operator*() {
-	return *_ptr;
+	if (--_size) _is_empty = true;
 }
