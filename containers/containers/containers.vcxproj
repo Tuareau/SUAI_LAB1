@@ -19,11 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\containers.cpp" />
+    <ClCompile Include="src\Containers.cpp" />
+    <ClCompile Include="src\Stack.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Element.h" />
     <ClInclude Include="src\AbstractQueue.h" />
+    <ClInclude Include="src\IInput.h" />
     <ClInclude Include="src\ListElement.h" />
     <ClInclude Include="src\Stack.h" />
     <ClInclude Include="src\StackElement.h" />
