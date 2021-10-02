@@ -11,8 +11,6 @@ class Deque : public AbstractQueue
 {
 private:
 	LinkedElement * _head;
-	
-	void copy(const Deque & other);
 
 public:
 	Deque();
@@ -24,6 +22,7 @@ public:
 	Deque & operator=(Deque && other) = delete;
 
 	void clear();
+	void copy(const Deque & other);
 
 	void push_back(const LinkedElement & el);
 	void push_front(const LinkedElement & el);
