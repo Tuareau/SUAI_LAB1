@@ -11,8 +11,6 @@ class Deque : public AbstractQueue
 {
 private:
 	LinkedElement * _head;
-	
-	void copy(const Deque & other);
 
 public:
 	Deque();
@@ -24,6 +22,7 @@ public:
 	Deque & operator=(Deque && other) = delete;
 
 	void clear();
+	void copy(const Deque & other);
 
 	void push_back(const LinkedElement & el);
 	void push_front(const LinkedElement & el);
@@ -37,37 +36,8 @@ public:
 	const LinkedElement & front() const;
 	const LinkedElement & back() const;
 
-
-	class Iterator
-	{
-	private:
-		LinkedElement * _ptr;
-
-	public:
-		Iterator();
-		explicit Iterator(LinkedElement * ptr);
-		Iterator(const Iterator & iter);
-		~Iterator() = default;
-
-		Iterator & operator=(const Iterator & iter);
-
-		Iterator & operator++();
-		Iterator & operator--();
-		Iterator operator++(int);
-		Iterator operator--(int);
-
-		bool operator!=(const Iterator & iter);
-		bool operator==(const Iterator & iter);
-
-		LinkedElement & operator*();
-
-	};
-
-	Iterator begin() const;
-	Iterator end() const;
-
-	void insert(const Iterator & pos, const LinkedElement & el);
-	void erase(const Iterator & pos);
+	void insert(size_t idx, const LinkedElement & el);
+	void erase(size_t idx);
 
 };
 
