@@ -3,14 +3,14 @@
 #define _STACK_H_
 
 #include "AbstractQueue.h"
-#include "StackElement.h"
+#include "HalfLinkedElement.h"
 
 #include <stdexcept>
 
 class Stack : public AbstractQueue
 {
 private:
-	StackElement * _top;
+	HalfLinkedElement * _top;
 
 	void clear();
 	void copy(const Stack & other);
@@ -24,9 +24,9 @@ public:
 	Stack & operator=(const Stack & other) = delete;
 	Stack & operator=(Stack && other) = delete;
 
-	const StackElement & top() const;
+	const HalfLinkedElement & top() const;
 
-	void push(const StackElement & el);
+	void push(const HalfLinkedElement & el);
 	void pop();
 
 };

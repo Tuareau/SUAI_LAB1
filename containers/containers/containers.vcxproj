@@ -20,15 +20,17 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Containers.cpp" />
+    <ClCompile Include="src\Deque.cpp" />
     <ClCompile Include="src\Stack.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\LinkedElement.h" />
+    <ClInclude Include="src\Deque.h" />
     <ClInclude Include="src\Element.h" />
     <ClInclude Include="src\AbstractQueue.h" />
     <ClInclude Include="src\IInput.h" />
-    <ClInclude Include="src\ListElement.h" />
     <ClInclude Include="src\Stack.h" />
-    <ClInclude Include="src\StackElement.h" />
+    <ClInclude Include="src\HalfLinkedElement.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

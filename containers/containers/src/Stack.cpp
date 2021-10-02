@@ -12,14 +12,14 @@ void Stack::copy(const Stack & other)
 	if (other.empty())
 		_top = nullptr;
 	else {
-		_top = new StackElement(other._top->value());
-		StackElement * curr = _top;
-		_is_empty = false;
+		_top = new HalfLinkedElement(other._top->value());
+		HalfLinkedElement * curr = _top;
+		_is_empty = false; _size++;
 
-		StackElement * original = other._top->ptr();
+		HalfLinkedElement * original = other._top->ptr();
 
 		while (original) {
-			curr->set_ptr(new StackElement(original->value()));
+			curr->set_ptr(new HalfLinkedElement(original->value()));
 			curr = curr->ptr();
 			original = original->ptr();
 			_size++;
@@ -29,7 +29,7 @@ void Stack::copy(const Stack & other)
 
 Stack::Stack(Stack && other) noexcept : AbstractQueue() {
 	_top = other._top;
-	_is_empty = false;
+	_is_empty = other._is_empty;
 	_size = other._size;
 
 	other._top = nullptr;
@@ -43,20 +43,19 @@ Stack::~Stack() {
 
 void Stack::clear() {
 	while (_top) {
-		StackElement * curr = _top;
+		HalfLinkedElement * curr = _top;
 		_top = _top->ptr();
 		delete curr;
 	}
-	AbstractQueue::_is_empty = true;
-	AbstractQueue::_size = 0;
+	_is_empty = true; _size = 0;
 }
 
-const StackElement & Stack::top() const {
+const HalfLinkedElement & Stack::top() const {
 	return *_top;
 }
 
-void Stack::push(const StackElement & el) {
-	StackElement * curr = new StackElement(el);
+void Stack::push(const HalfLinkedElement & el) {
+	HalfLinkedElement * curr = new HalfLinkedElement(el.value());
 	curr->set_ptr(_top);
 	_top = curr;		
 	_size++; _is_empty = false;
@@ -65,7 +64,7 @@ void Stack::push(const StackElement & el) {
 void Stack::pop() {
 	if (this->empty())
 		throw std::out_of_range("Stack::pop(): stack was empty");
-	StackElement * curr = _top;
+	HalfLinkedElement * curr = _top;
 	_top = _top->ptr();
 	delete curr;
 	_size--;
