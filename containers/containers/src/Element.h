@@ -6,15 +6,15 @@ class Element
 {
 private:
 	int _value;
-	Element * _prev;
+
 public:
-	Element() : _value(0), _prev(nullptr) {}
-	explicit Element(int val) : _value(val), _prev(nullptr) {}
+	Element() : _value(0) {}
+	explicit Element(int val) : _value(val) {}
 	~Element() = default;
 
-	void set_ptr(Element * p) { _prev = p; }
-	Element * get_ptr() { return _prev; }
-	int value() { return _value; }
+	int value() const { return _value; }
+
+	void set_value(int val) { _value = val; }
 };
 
 #endif
