@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Containers.cpp" />
+    <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Deque.cpp" />
     <ClCompile Include="src\ForwardList.cpp" />
     <ClCompile Include="src\Keeper.cpp" />

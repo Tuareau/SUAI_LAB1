@@ -70,3 +70,107 @@ void Keeper::delete_container(ContainerType type) {
 			}
 	}
 }
+
+void Keeper::run() {
+	using std::cout;
+	using std::cin;
+	using std::endl;
+	cout << "\n\tKEEPER\n";
+	cout << "\n\tKeeper object has information about containers:\n";
+	cout << "\n- Stack\n- Deque\n- Forward List\n";
+	cout << "\n\tAny of these can be added once\n";
+	int choice = 0;
+	while (choice != QUIT)
+	{
+		cout << "\nChoose action:\n";
+		cout << "1 - add container\n";
+		cout << "2 - delete container\n";
+		cout << "3 - load from file\n";
+		cout << "4 - save in file\n";
+		cout << "5 - work with containers\n";
+		cout << "6 - quit\n";
+
+		IInput<int> input;
+		choice = input.getValueFromInput();
+		if (choice < ADD || choice > QUIT) {
+			system("cls");
+			cout << "Wrong choice, try again\n";
+			continue;
+		}
+
+		system("cls");
+		switch (choice) {
+		case ADD:
+			add();
+			break;
+		case DELETE:
+			remove();
+			break;
+		case SAVE:
+			save();
+			break;
+		case LOAD:
+			load();
+			break;
+		case PROCESS:
+			process();
+			break;
+		case QUIT:
+			break;
+		default:
+			break;
+		}
+	}
+}
+
+void Keeper::add()
+{
+	using std::cout;
+	using std::cin;
+	using std::endl;
+	cout << "\n\tADD CONTAINER\n";
+	int choice = 0;
+	cout << "\nWhat type of container:\n";
+	cout << "1 - add container\n";
+	cout << "2 - delete container\n";
+	cout << "3 - load from file\n";
+	cout << "4 - save in file\n";
+	cout << "5 - work with containers\n";
+	cout << "6 - quit\n";
+
+	IInput<int> input;
+	choice = input.getValueFromInput();
+	if (choice < ADD || choice > QUIT) {
+		system("cls");
+		cout << "Wrong choice, try again later\n";
+	}
+
+	system("cls");
+	switch (choice) {
+	case (int)ContainerType::DEQUE:
+		AbstractQueue * deque = new Deque;
+
+
+		break;
+	case DELETE:
+
+
+		break;
+	case SAVE:
+
+
+		break;
+	case LOAD:
+
+
+		break;
+	case PROCESS:
+
+
+		break;
+	case QUIT:
+		break;
+	default:
+		break;
+	}
+}

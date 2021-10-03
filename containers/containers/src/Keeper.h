@@ -8,6 +8,8 @@
 #include "Stack.h"
 #include "ForwardList.h"
 
+#include "IInput.h"
+
 #include <iostream>
 #include <fstream>
 
@@ -23,21 +25,26 @@ private:
 	void process_list();
 	void output() const;
 
+	void add_container(AbstractQueue * container);
+	enum class ContainerType;
+	void delete_container(ContainerType type);
+
 public:
 	Keeper();
 	Keeper(const Keeper &) = delete;
 	Keeper(Keeper &&) = delete;
 	~Keeper() = default;
 
-	enum class ContainerType { STACK, DEQUE, FORWARD_LIST };
+	enum class ContainerType { STACK, DEQUE, FORWARD_LIST, NONE };
 
+	void add();
+	void remove();
 	void save() const;
 	void load();
-
 	void process();
 
-	void add_container(AbstractQueue * container);
-	void delete_container(ContainerType type);
+	void run();
+	enum menu { ADD = 1, DELETE, SAVE, LOAD, PROCESS, QUIT };
 
 };
 
