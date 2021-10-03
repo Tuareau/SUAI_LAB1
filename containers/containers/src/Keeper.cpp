@@ -127,44 +127,106 @@ void Keeper::add()
 	cout << "\n\tADD CONTAINER\n";
 	int choice = 0;
 	cout << "\nWhat type of container:\n";
-	cout << "1 - add container\n";
-	cout << "2 - delete container\n";
-	cout << "3 - load from file\n";
-	cout << "4 - save in file\n";
-	cout << "5 - work with containers\n";
-	cout << "6 - quit\n";
+	cout << "1 - add deque\n";
+	cout << "2 - add stack\n";
+	cout << "3 - add forward list\n";
+	cout << "4 - cancel\n";
 
 	IInput<int> input;
 	choice = input.getValueFromInput();
-	if (choice < ADD || choice > QUIT) {
-		system("cls");
-		cout << "Wrong choice, try again later\n";
+	if (choice < (int)ContainerType::DEQUE 
+		|| choice >(int)ContainerType::NONE) {
+		cout << "Wrong choice, canceled\n";
+		return;
 	}
 
 	system("cls");
 	switch (choice) {
 	case (int)ContainerType::DEQUE:
 		AbstractQueue * deque = new Deque;
-
-
+		add_container(deque);
 		break;
-	case DELETE:
-
-
+	case (int)ContainerType::STACK:
+		AbstractQueue * stack = new Stack;
+		add_container(stack);
 		break;
-	case SAVE:
-
-
+	case (int)ContainerType::FORWARD_LIST:
+		AbstractQueue * fwd_list = new ForwardList;
+		add_container(fwd_list);
 		break;
-	case LOAD:
-
-
+	case (int)ContainerType::NONE:
 		break;
-	case PROCESS:
-
-
+	default:
 		break;
-	case QUIT:
+	}
+}
+
+void Keeper::remove() {
+	using std::cout;
+	cout << "\n\tDELETE CONTAINER\n";
+	int choice = 0;
+	cout << "\nWhat type of container:\n";
+	cout << "1 - delete deque\n";
+	cout << "2 - delete stack\n";
+	cout << "3 - delete forward list\n";
+	cout << "4 - cancel\n";
+
+	IInput<int> input;
+	choice = input.getValueFromInput();
+	if (choice < (int)ContainerType::DEQUE
+		|| choice >(int)ContainerType::NONE) {
+		cout << "Wrong choice, canceled\n";
+		return;
+	}
+
+	system("cls");
+	switch (choice) {
+	case (int)ContainerType::DEQUE:
+		delete_container(ContainerType::DEQUE);
+		break;
+	case (int)ContainerType::STACK:
+		delete_container(ContainerType::STACK);
+		break;
+	case (int)ContainerType::FORWARD_LIST:
+		delete_container(ContainerType::FORWARD_LIST);
+		break;
+	case (int)ContainerType::NONE:
+		break;
+	default:
+		break;
+	}
+}
+
+void Keeper::process() {
+	using std::cout;
+	cout << "\n\tWORK WITH CONTAINER\n";
+	int choice = 0;
+	cout << "\nWhat type of container:\n";
+	cout << "1 - deque\n";
+	cout << "2 - stack\n";
+	cout << "3 - forward list\n";
+	cout << "4 - cancel\n";
+
+	IInput<int> input;
+	choice = input.getValueFromInput();
+	if (choice < (int)ContainerType::DEQUE
+		|| choice >(int)ContainerType::NONE) {
+		cout << "Wrong choice, canceled\n";
+		return;
+	}
+
+	system("cls");
+	switch (choice) {
+	case (int)ContainerType::DEQUE:
+		process_deque();
+		break;
+	case (int)ContainerType::STACK:
+		process_stack();
+		break;
+	case (int)ContainerType::FORWARD_LIST:
+		process_list();
+		break;
+	case (int)ContainerType::NONE:
 		break;
 	default:
 		break;
