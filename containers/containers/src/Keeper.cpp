@@ -5,6 +5,10 @@ Keeper::Keeper() {
 	has_stack = has_deque = has_list = false;
 }
 
+Keeper::~Keeper() {
+	clear();
+}
+
 void Keeper::add_container(AbstractQueue * container) {
 	if (dynamic_cast<Deque *>(container)) {
 		if (has_deque)
@@ -274,21 +278,96 @@ void Keeper::output() const {
 	if (deque) {
 		std::cout << "\nDEQUE\n";
 		for (Deque::Iterator iter = deque->begin(); iter.ptr() != nullptr; iter++)
-			std::cout << (*iter).value();
+			std::cout << (*iter).value() << " ";
 		std::cout << std::endl;
 	}
 	Stack * stack = dynamic_cast<Stack *>(find_container(ContainerType::STACK));
 	if (stack) {
 		std::cout << "\nSTACK\n";
 		for (Stack::Iterator iter = stack->begin(); iter.ptr() != nullptr; iter++)
-			std::cout << (*iter).value();
+			std::cout << (*iter).value() << " ";
 		std::cout << std::endl;
 	}
 	ForwardList * list = dynamic_cast<ForwardList *>(find_container(ContainerType::FORWARD_LIST));
-	if (deque) {
+	if (list) {
 		std::cout << "\nFORWARD LIST\n";
 		for (ForwardList::Iterator iter = list->begin(); iter.ptr() != nullptr; iter++)
-			std::cout << (*iter).value();
+			std::cout << (*iter).value() << " ";
 		std::cout << std::endl;
+	}
+}
+
+void Keeper::save() const {
+	std::ofstream fout("containers.txt", std::ios_base::trunc | std::ios_base::out);
+	Deque * deque = dynamic_cast<Deque *>(find_container(ContainerType::DEQUE));
+	if (deque) {
+		fout << (int)ContainerType::DEQUE << " ";
+		fout << deque->size() << "\n";
+		for (Deque::Iterator iter = deque->begin(); iter.ptr() != nullptr; iter++)
+			fout << (*iter).value() << " ";
+		fout << std::endl;
+	}
+	Stack * stack = dynamic_cast<Stack *>(find_container(ContainerType::STACK));
+	if (stack) {
+		fout << (int)ContainerType::STACK << " ";
+		fout << stack->size() << "\n";
+		for (Stack::Iterator iter = stack->begin(); iter.ptr() != nullptr; iter++)
+			fout << (*iter).value() << " ";
+		fout << std::endl;
+	}
+	ForwardList * list = dynamic_cast<ForwardList *>(find_container(ContainerType::FORWARD_LIST));
+	if (list) {
+		fout << (int)ContainerType::FORWARD_LIST << " ";
+		fout << list->size() << "\n";
+		for (ForwardList::Iterator iter = list->begin(); iter.ptr() != nullptr; iter++)
+			fout << (*iter).value() << " ";
+		fout << std::endl;
+	}
+	std::cout << "\nEverything was saved successfuly\n";
+	fout.close();
+}
+
+void Keeper::load() {
+	std::ifstream fin("containers.txt", std::ios_base::in);
+	clear();
+	if (!fin.good()) {
+		std::cout << "\nCouldn't open file\n";
+		return;
+	}
+
+	int type, value;
+	size_t size;
+	AbstractQueue * container;
+	while (fin.good() && !fin.eof() && fin.peek() != EOF) {
+		fin >> type >> size;
+		switch (type) {
+		case (int)ContainerType::DEQUE:
+			container = new Deque;
+			break;
+		case (int)ContainerType::STACK:
+			container = new Stack;
+			break;
+		case (int)ContainerType::FORWARD_LIST:
+			container = new ForwardList;
+			break;
+		default:
+			break;
+		}
+		while (size--) {
+			fin >> value;
+			container->push(Element(value));
+		}
+		for (size_t i = 0; i < CONTAINERS; i++)
+			if (!_containers[i])
+				_containers[i] = container;		
+	}
+	std::cout << "\nEverything was loaded successfuly\n";
+	fin.close();
+}
+
+void Keeper::clear() {
+	for (size_t i = 0; i < CONTAINERS; ++i) {
+		delete _containers[i];
+		_containers[i] = nullptr;
 	}
 }

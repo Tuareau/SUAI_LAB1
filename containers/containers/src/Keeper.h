@@ -24,10 +24,11 @@ private:
 	enum class ContainerType;
 
 	AbstractQueue * find_container(ContainerType type) const;
-	void output() const;
 
 	void add_container(AbstractQueue * container);
 	void delete_container(ContainerType type);
+
+	void clear();
 
 	enum process_menu { ENQUEUE = 1, DEQUEUE, OUTPUT, END };
 
@@ -35,7 +36,7 @@ public:
 	Keeper();
 	Keeper(const Keeper &) = delete;
 	Keeper(Keeper &&) = delete;
-	~Keeper() = default;
+	~Keeper();
 
 	enum class ContainerType { STACK, DEQUE, FORWARD_LIST, NONE };
 
@@ -43,6 +44,7 @@ public:
 	void remove();
 	void save() const;
 	void load();
+	void output() const;
 	void process();
 
 	void run();
