@@ -2,6 +2,8 @@
 #ifndef _QUEUE_H_
 #define _QUEUE_H_
 
+#include "Element.h"
+
 class AbstractQueue
 {
 protected:
@@ -14,8 +16,11 @@ public:
 	AbstractQueue(AbstractQueue && qu) noexcept = default;
 	~AbstractQueue() = default;
 
-	virtual size_t size() const = 0 { return _size; }
-	virtual bool empty() const = 0 { return _is_empty; }
+	size_t size() const { return _size; }
+	bool empty() const { return _is_empty; }
+
+	virtual void push(const Element & el) = 0;
+	virtual void pop() = 0;
 };
 
 #endif

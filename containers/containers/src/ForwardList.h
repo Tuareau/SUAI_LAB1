@@ -6,6 +6,8 @@
 #include "HalfLinkedElement.h"
 
 #include <stdexcept>
+#include <iostream>
+#include "IInput.h"
 
 class ForwardList : public AbstractQueue
 {
@@ -24,15 +26,18 @@ public:
 	void clear();
 	void copy(const ForwardList & other);
 
-	void push_back(const HalfLinkedElement & el);
-	void push_front(const HalfLinkedElement & el);
+	void push_back(const Element & el);
+	void push_front(const Element & el);
 	void pop_back();
 	void pop_front();
+
+	virtual void push(const Element & el) override;
+	virtual void pop() override;
 
 	const HalfLinkedElement & front() const;
 	const HalfLinkedElement & back() const;
 
-	void insert(size_t idx, const HalfLinkedElement & el);
+	void insert(size_t idx, const Element & el);
 	void erase(size_t idx);
 
 };

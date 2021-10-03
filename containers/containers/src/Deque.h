@@ -6,6 +6,8 @@
 #include "LinkedElement.h"
 
 #include <stdexcept>
+#include <iostream>
+#include "IInput.h"
 
 class Deque : public AbstractQueue
 {
@@ -24,10 +26,8 @@ public:
 	void clear();
 	void copy(const Deque & other);
 
-	void push_back(const LinkedElement & el);
-	void push_front(const LinkedElement & el);
-	void pop_back();
-	void pop_front();
+	virtual void push(const Element & el) override;
+	virtual void pop() override;
 
 	const LinkedElement & at(size_t idx) const;
 	LinkedElement & at(size_t idx);
@@ -36,7 +36,12 @@ public:
 	const LinkedElement & front() const;
 	const LinkedElement & back() const;
 
-	void insert(size_t idx, const LinkedElement & el);
+	void push_back(const Element & el);
+	void push_front(const Element & el);
+	void pop_back();
+	void pop_front();
+
+	void insert(size_t idx, const Element & el);
 	void erase(size_t idx);
 
 };

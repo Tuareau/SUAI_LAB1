@@ -73,8 +73,6 @@ void Keeper::delete_container(ContainerType type) {
 
 void Keeper::run() {
 	using std::cout;
-	using std::cin;
-	using std::endl;
 	cout << "\n\tKEEPER\n";
 	cout << "\n\tKeeper object has information about containers:\n";
 	cout << "\n- Stack\n- Deque\n- Forward List\n";
@@ -126,8 +124,6 @@ void Keeper::run() {
 void Keeper::add()
 {
 	using std::cout;
-	using std::cin;
-	using std::endl;
 	cout << "\n\tADD CONTAINER\n";
 	int choice = 0;
 	cout << "\nWhat type of container:\n";

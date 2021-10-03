@@ -26,8 +26,8 @@ public:
 
 	const HalfLinkedElement & top() const;
 
-	void push(const HalfLinkedElement & el);
-	void pop();
+	virtual void push(const Element & el) override;
+	virtual void pop() override;
 
 };
 
