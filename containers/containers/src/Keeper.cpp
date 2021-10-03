@@ -199,36 +199,96 @@ void Keeper::remove() {
 
 void Keeper::process() {
 	using std::cout;
-	cout << "\n\tWORK WITH CONTAINER\n";
+	cout << "\n\tWORK WITH CONTAINERS\n";
 	int choice = 0;
-	cout << "\nWhat type of container:\n";
-	cout << "1 - deque\n";
-	cout << "2 - stack\n";
-	cout << "3 - forward list\n";
-	cout << "4 - cancel\n";
+	while (choice != END) {
+		cout << "\nNote that we'll work with all containers at one time:\n";
+		cout << "Containers manipulations:\n";
+		cout << "1 - add element\n";
+		cout << "2 - delete element\n";
+		cout << "3 - output\n";
+		cout << "4 - cancel\n";
 
-	IInput<int> input;
-	choice = input.getValueFromInput();
-	if (choice < (int)ContainerType::DEQUE
-		|| choice >(int)ContainerType::NONE) {
-		cout << "Wrong choice, canceled\n";
-		return;
+		IInput<int> input;
+		choice = input.getValueFromInput();
+		if (choice < ENQUEUE
+			|| choice > END) {
+			system("cls");
+			cout << "Wrong choice, try again\n";
+			continue;
+		}
+
+		int value;
+		system("cls");
+		switch (choice) {
+		case ENQUEUE:
+			cout << "Put your element: ";
+			value = input.getValueFromInput();
+			for (size_t i = 0; i < CONTAINERS; ++i)
+				if (_containers[i])
+					_containers[i]->push(Element(value));
+			break;
+		case DEQUEUE:
+			for (size_t i = 0; i < CONTAINERS; ++i)
+				if (_containers[i])
+					_containers[i]->pop();
+			break;
+		case OUTPUT:
+			output();
+			break;
+		case END:
+			break;
+		default:
+			break;
+		}
 	}
+}
 
-	system("cls");
-	switch (choice) {
-	case (int)ContainerType::DEQUE:
-		process_deque();
+AbstractQueue * Keeper::find_container(ContainerType type) const {
+	switch (type) {
+	case ContainerType::DEQUE:
+		for (size_t i = 0; i < CONTAINERS; ++i)
+			if (dynamic_cast<Deque *>(_containers[i]))
+				return _containers[i];
 		break;
-	case (int)ContainerType::STACK:
-		process_stack();
+	case ContainerType::STACK:
+		for (size_t i = 0; i < CONTAINERS; ++i)
+			if (dynamic_cast<Stack *>(_containers[i]))
+				return _containers[i];
 		break;
-	case (int)ContainerType::FORWARD_LIST:
-		process_list();
+	case ContainerType::FORWARD_LIST:
+		for (size_t i = 0; i < CONTAINERS; ++i)
+			if (dynamic_cast<ForwardList *>(_containers[i]))
+				return _containers[i];
 		break;
-	case (int)ContainerType::NONE:
+	case ContainerType::NONE:
 		break;
 	default:
 		break;
+	}
+	return nullptr;
+}
+
+void Keeper::output() const {
+	Deque * deque = dynamic_cast<Deque *>(find_container(ContainerType::DEQUE));
+	if (deque) {
+		std::cout << "\nDEQUE\n";
+		for (Deque::Iterator iter = deque->begin(); iter.ptr() != nullptr; iter++)
+			std::cout << (*iter).value();
+		std::cout << std::endl;
+	}
+	Stack * stack = dynamic_cast<Stack *>(find_container(ContainerType::STACK));
+	if (stack) {
+		std::cout << "\nSTACK\n";
+		for (Stack::Iterator iter = stack->begin(); iter.ptr() != nullptr; iter++)
+			std::cout << (*iter).value();
+		std::cout << std::endl;
+	}
+	ForwardList * list = dynamic_cast<ForwardList *>(find_container(ContainerType::FORWARD_LIST));
+	if (deque) {
+		std::cout << "\nFORWARD LIST\n";
+		for (ForwardList::Iterator iter = list->begin(); iter.ptr() != nullptr; iter++)
+			std::cout << (*iter).value();
+		std::cout << std::endl;
 	}
 }

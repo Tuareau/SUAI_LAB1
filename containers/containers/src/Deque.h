@@ -44,6 +44,22 @@ public:
 	void insert(size_t idx, const Element & el);
 	void erase(size_t idx);
 
+	class Iterator
+	{
+	private:
+		LinkedElement * _ptr;
+	public:
+		Iterator();
+		explicit Iterator(LinkedElement * ptr) : _ptr(ptr) {}
+		Iterator(const Iterator & iter) : _ptr(iter._ptr) {}
+		~Iterator() = default;
+		Iterator & operator=(const Iterator & iter) { _ptr = iter._ptr; }
+		Iterator operator++(int) { _ptr = _ptr->right_ptr(); }
+		LinkedElement & operator*() { return *_ptr; }
+		LinkedElement * ptr() { return _ptr; }
+	};
+	Iterator begin() { return Iterator(_head); }
+
 };
 
 #endif

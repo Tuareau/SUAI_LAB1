@@ -40,6 +40,22 @@ public:
 	void insert(size_t idx, const Element & el);
 	void erase(size_t idx);
 
+	class Iterator
+	{
+	private:
+		HalfLinkedElement * _ptr;
+	public:
+		Iterator();
+		explicit Iterator(HalfLinkedElement * ptr) : _ptr(ptr) {}
+		Iterator(const Iterator & iter) : _ptr(iter._ptr) {}
+		~Iterator() = default;
+		Iterator & operator=(const Iterator & iter) { _ptr = iter._ptr; }
+		Iterator operator++(int) { _ptr = _ptr->ptr(); }
+		HalfLinkedElement & operator*() { return *_ptr; }
+		HalfLinkedElement * ptr() { return _ptr; }
+	};
+	Iterator begin() { return Iterator(_head); }
+
 };
 
 #endif

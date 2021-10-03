@@ -21,6 +21,7 @@ public:
 
 	virtual void push(const Element & el) = 0;
 	virtual void pop() = 0;
+
 };
 
 #endif
