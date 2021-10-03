@@ -1,6 +1,5 @@
 ﻿#include <iostream>
 
-#include "IInput.h"
 #include "Keeper.h"
 
 int main()

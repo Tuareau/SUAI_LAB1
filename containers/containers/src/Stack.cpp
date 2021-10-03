@@ -54,7 +54,7 @@ const HalfLinkedElement & Stack::top() const {
 	return *_top;
 }
 
-void Stack::push(const HalfLinkedElement & el) {
+void Stack::push(const Element & el) {
 	HalfLinkedElement * curr = new HalfLinkedElement(el.value());
 	curr->set_ptr(_top);
 	_top = curr;		

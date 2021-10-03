@@ -49,11 +49,77 @@ void ForwardList::clear() {
 	_is_empty = true; _size = 0;
 }
 
-void ForwardList::push_back(const HalfLinkedElement & el) {
+void ForwardList::push(const Element & el) {
+	using std::cout;
+	enum choices { FRONT = 1, BACK, INDEX };
+	int choice = 0;
+	cout << "\nDeque asks where to push:\n";
+	cout << "1 - front\n";
+	cout << "2 - back\n";
+	cout << "3 - by index\n";
+
+	IInput<int> input;
+	choice = input.getValueFromInput();
+	if (choice < FRONT || choice > INDEX) {
+		cout << "Wrong choice, canceled\n";
+		return;
+	}
+
+	size_t idx;
+	switch (choice) {
+	case FRONT:
+		push_front(el);
+		break;
+	case BACK:
+		push_back(el);
+		break;
+	case INDEX:
+		idx = (size_t)input.getValueFromInput();
+		insert(idx, el);
+		break;
+	default:
+		break;
+	}
+}
+
+void ForwardList::pop() {
+	using std::cout;
+	enum choices { FRONT = 1, BACK, INDEX };
+	int choice = 0;
+	cout << "\nDeque asks where to pop:\n";
+	cout << "1 - front\n";
+	cout << "2 - back\n";
+	cout << "3 - by index\n";
+
+	IInput<int> input;
+	choice = input.getValueFromInput();
+	if (choice < FRONT || choice > INDEX) {
+		cout << "Wrong choice, canceled\n";
+		return;
+	}
+
+	size_t idx;
+	switch (choice) {
+	case FRONT:
+		pop_front();
+		break;
+	case BACK:
+		pop_back();
+		break;
+	case INDEX:
+		idx = (size_t)input.getValueFromInput();
+		erase(idx);
+		break;
+	default:
+		break;
+	}
+}
+
+void ForwardList::push_back(const Element & el) {
 	HalfLinkedElement * last = _head;
 	while (last->ptr())
 		last = last->ptr();
-	HalfLinkedElement * element = new HalfLinkedElement(el);
+	HalfLinkedElement * element = new HalfLinkedElement(el.value());
 	last->set_ptr(element);
 	_size++; _is_empty = false;
 }
@@ -86,7 +152,7 @@ const HalfLinkedElement & ForwardList::back() const {
 	return *last;
 }
 
-void ForwardList::push_front(const HalfLinkedElement & el) {
+void ForwardList::push_front(const Element & el) {
 	HalfLinkedElement * element = new HalfLinkedElement(el.value());
 	element->set_ptr(_head);
 	_head = element;
@@ -103,7 +169,7 @@ void ForwardList::pop_front() {
 	if (!size) _is_empty = true;
 }
 
-void ForwardList::push_front(const HalfLinkedElement & el) {
+void ForwardList::push_front(const Element & el) {
 	HalfLinkedElement * element = new HalfLinkedElement(el.value());
 	element->set_ptr(_head);
 	_head = element;
@@ -116,7 +182,7 @@ const HalfLinkedElement & ForwardList::front() const {
 	return *_head;
 }
 
-void ForwardList::insert(size_t idx, const HalfLinkedElement & el) {
+void ForwardList::insert(size_t idx, const Element & el) {
 	if (idx > _size)
 		throw std::invalid_argument("ForwardList::insert(): invalid index");
 	if (this->empty()) {
