@@ -16,12 +16,13 @@
 
 class Keeper
 {
+public:
+	enum class ContainerType;
+
 private:
 	Array<AbstractQueue *> _containers;
 	bool has_stack, has_deque, has_list;
 	const static size_t CONTAINERS = 3;
-
-	enum class ContainerType;
 
 	AbstractQueue * find_container(ContainerType type) const;
 

@@ -54,7 +54,7 @@ public:
 		Iterator(const Iterator & iter) : _ptr(iter._ptr) {}
 		~Iterator() = default;
 		Iterator & operator=(const Iterator & iter) { _ptr = iter._ptr; }
-		Iterator operator++(int) { _ptr = _ptr->right_ptr(); }
+		Iterator operator++() { _ptr = _ptr->right_ptr(); return Iterator(_ptr); }
 		LinkedElement & operator*() { return *_ptr; }
 		LinkedElement * ptr() { return _ptr; }
 	};

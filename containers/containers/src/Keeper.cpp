@@ -19,6 +19,7 @@ void Keeper::add_container(AbstractQueue * container) {
 					_containers[i] = container;
 					has_deque = true;
 					std::cout << "Deque was added successfuly\n";
+					break;
 				}
 		}		
 	}
@@ -31,6 +32,7 @@ void Keeper::add_container(AbstractQueue * container) {
 					_containers[i] = container;
 					has_stack = true;
 					std::cout << "Stack was added successfuly\n";
+					break;
 				}
 		}
 	}
@@ -42,7 +44,8 @@ void Keeper::add_container(AbstractQueue * container) {
 				if (!_containers[i]) {
 					_containers[i] = container;
 					has_list = true;
-					std::cout << "Stack was added successfuly\n";
+					std::cout << "Forward list was added successfuly\n";
+					break;
 				}
 		}
 	}
@@ -145,18 +148,19 @@ void Keeper::add()
 	}
 
 	system("cls");
+	AbstractQueue * deque, * stack, * list;
 	switch (choice) {
 	case (int)ContainerType::DEQUE:
-		AbstractQueue * deque = new Deque;
+		deque = new Deque;
 		add_container(deque);
 		break;
 	case (int)ContainerType::STACK:
-		AbstractQueue * stack = new Stack;
+		stack = new Stack;
 		add_container(stack);
 		break;
 	case (int)ContainerType::FORWARD_LIST:
-		AbstractQueue * fwd_list = new ForwardList;
-		add_container(fwd_list);
+		list = new ForwardList;
+		add_container(list);
 		break;
 	case (int)ContainerType::NONE:
 		break;
@@ -277,21 +281,21 @@ void Keeper::output() const {
 	Deque * deque = dynamic_cast<Deque *>(find_container(ContainerType::DEQUE));
 	if (deque) {
 		std::cout << "\nDEQUE\n";
-		for (Deque::Iterator iter = deque->begin(); iter.ptr() != nullptr; iter++)
+		for (Deque::Iterator iter = deque->begin(); iter.ptr() != nullptr; ++iter)
 			std::cout << (*iter).value() << " ";
 		std::cout << std::endl;
 	}
 	Stack * stack = dynamic_cast<Stack *>(find_container(ContainerType::STACK));
 	if (stack) {
 		std::cout << "\nSTACK\n";
-		for (Stack::Iterator iter = stack->begin(); iter.ptr() != nullptr; iter++)
+		for (Stack::Iterator iter = stack->begin(); iter.ptr() != nullptr; ++iter)
 			std::cout << (*iter).value() << " ";
 		std::cout << std::endl;
 	}
 	ForwardList * list = dynamic_cast<ForwardList *>(find_container(ContainerType::FORWARD_LIST));
 	if (list) {
 		std::cout << "\nFORWARD LIST\n";
-		for (ForwardList::Iterator iter = list->begin(); iter.ptr() != nullptr; iter++)
+		for (ForwardList::Iterator iter = list->begin(); iter.ptr() != nullptr; ++iter)
 			std::cout << (*iter).value() << " ";
 		std::cout << std::endl;
 	}
@@ -303,7 +307,7 @@ void Keeper::save() const {
 	if (deque) {
 		fout << (int)ContainerType::DEQUE << " ";
 		fout << deque->size() << "\n";
-		for (Deque::Iterator iter = deque->begin(); iter.ptr() != nullptr; iter++)
+		for (Deque::Iterator iter = deque->begin(); iter.ptr() != nullptr; ++iter)
 			fout << (*iter).value() << " ";
 		fout << std::endl;
 	}
@@ -311,7 +315,7 @@ void Keeper::save() const {
 	if (stack) {
 		fout << (int)ContainerType::STACK << " ";
 		fout << stack->size() << "\n";
-		for (Stack::Iterator iter = stack->begin(); iter.ptr() != nullptr; iter++)
+		for (Stack::Iterator iter = stack->begin(); iter.ptr() != nullptr; ++iter)
 			fout << (*iter).value() << " ";
 		fout << std::endl;
 	}
@@ -319,7 +323,7 @@ void Keeper::save() const {
 	if (list) {
 		fout << (int)ContainerType::FORWARD_LIST << " ";
 		fout << list->size() << "\n";
-		for (ForwardList::Iterator iter = list->begin(); iter.ptr() != nullptr; iter++)
+		for (ForwardList::Iterator iter = list->begin(); iter.ptr() != nullptr; ++iter)
 			fout << (*iter).value() << " ";
 		fout << std::endl;
 	}
@@ -337,7 +341,7 @@ void Keeper::load() {
 
 	int type, value;
 	size_t size;
-	AbstractQueue * container;
+	AbstractQueue * container = nullptr;
 	while (fin.good() && !fin.eof() && fin.peek() != EOF) {
 		fin >> type >> size;
 		switch (type) {

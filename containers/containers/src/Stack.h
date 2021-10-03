@@ -39,7 +39,7 @@ public:
 		Iterator(const Iterator & iter) : _ptr(iter._ptr) {}
 		~Iterator() = default;
 		Iterator & operator=(const Iterator & iter) { _ptr = iter._ptr; }
-		Iterator operator++(int) { _ptr = _ptr->ptr(); }
+		Iterator operator++() { _ptr = _ptr->ptr(); return Iterator(_ptr); }
 		HalfLinkedElement & operator*() { return *_ptr; }
 		HalfLinkedElement * ptr() { return _ptr; }
 	};

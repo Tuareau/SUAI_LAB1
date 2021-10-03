@@ -7,10 +7,12 @@ Stack::Stack(const Stack & other) : AbstractQueue() {
 	copy(other);
 }
 
-void Stack::copy(const Stack & other)
-{
-	if (other.empty())
+void Stack::copy(const Stack & other) {
+	clear();
+	if (other.empty()) {
 		_top = nullptr;
+		_size = 0; _is_empty = true;
+	}
 	else {
 		_top = new HalfLinkedElement(other._top->value());
 		HalfLinkedElement * curr = _top;
@@ -51,6 +53,8 @@ void Stack::clear() {
 }
 
 const HalfLinkedElement & Stack::top() const {
+	if (this->empty())
+		throw std::out_of_range("Stack::top(): stack was empty");
 	return *_top;
 }
 

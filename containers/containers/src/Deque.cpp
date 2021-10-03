@@ -22,8 +22,10 @@ Deque::Deque(Deque && other) noexcept : AbstractQueue() {
 
 void Deque::copy(const Deque & other) {
 	clear();
-	if (other.empty())
+	if (other.empty()) {
 		_head = nullptr;
+		_size = 0; _is_empty = true;
+	}
 	else {
 		_head = new LinkedElement(other._head->value());
 		LinkedElement * curr;
@@ -120,13 +122,16 @@ void Deque::pop() {
 }
 
 void Deque::push_back(const Element & el) {
-	LinkedElement * last = _head;
-	while (last->right_ptr())
-		last = last->right_ptr();
-
 	LinkedElement * element = new LinkedElement(el.value());
-	last->set_right_ptr(element);
-	last->right_ptr()->set_left_ptr(last);
+	if (_head) {
+		LinkedElement * last = _head;
+		while (last->right_ptr())
+			last = last->right_ptr();
+
+		last->set_right_ptr(element);
+		element->set_left_ptr(last);
+	}
+	else _head = element;
 	_size++; _is_empty = false;
 }
 
@@ -134,13 +139,17 @@ void Deque::pop_back() {
 	if (this->empty())
 		throw std::out_of_range("Deque::pop_back(): deque was empty");
 	LinkedElement * last = _head;
-	while (last->right_ptr())
+	LinkedElement * beside = nullptr;
+	while (last->right_ptr()) {
+		beside = last;
 		last = last->right_ptr();
+	}
 
-	last->left_ptr()->set_right_ptr(nullptr);
+	if (beside)
+		beside->set_right_ptr(nullptr);
 	delete last;
 	_size--;
-	if (!size) {
+	if (!_size) {
 		_head = nullptr;
 		_is_empty = true;
 	}
@@ -157,8 +166,10 @@ const LinkedElement & Deque::back() const {
 
 void Deque::push_front(const Element & el) {
 	LinkedElement * element = new LinkedElement(el.value());
-	element->set_right_ptr(_head);
-	_head->set_left_ptr(element);
+	if (_head) {
+		element->set_right_ptr(_head);
+		_head->set_left_ptr(element);
+	}
 	_head = element;
 	++_size; _is_empty = false;
 }
@@ -171,18 +182,10 @@ void Deque::pop_front() {
 	_head->set_left_ptr(nullptr);
 	delete element;
 	_size--;
-	if (!size) {
+	if (!_size) {
 		_head = nullptr;
 		_is_empty = true;
 	}
-}
-
-void Deque::push_front(const Element & el) {
-	LinkedElement * element = new LinkedElement(el.value());
-	element->set_right_ptr(_head);
-	_head->set_left_ptr(element);
-	_head = element;
-	++_size; _is_empty = false;
 }
 
 const LinkedElement & Deque::front() const {
@@ -191,8 +194,7 @@ const LinkedElement & Deque::front() const {
 	return *_head;
 }
 
-const LinkedElement & Deque::at(size_t idx) const
-{
+const LinkedElement & Deque::at(size_t idx) const {
 	if (idx >= _size)
 		throw std::invalid_argument("Deque::at(): invalid index");
 	LinkedElement * curr = _head;
@@ -220,16 +222,12 @@ LinkedElement & Deque::operator[](size_t idx) noexcept {
 void Deque::insert(size_t idx, const Element & el) {
 	if (idx > _size)
 		throw std::invalid_argument("Deque::insert(): invalid index");
-	if (this->empty()) {
-		push_back(el);
-		return;
-	}
 
 	LinkedElement * curr = _head;
 	while (idx--)
 		curr = curr->right_ptr();
 
-	if (curr == _head) {
+	if (curr == _head || curr == nullptr) {
 		if (!idx)
 			push_front(el);
 		else
