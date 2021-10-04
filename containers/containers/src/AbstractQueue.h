@@ -1,6 +1,6 @@
 #pragma once
-#ifndef _QUEUE_H_
-#define _QUEUE_H_
+#ifndef _ABSTRACT_QUEUE_H_
+#define _ABSTRACT_QUEUE_H_
 
 #include "Element.h"
 

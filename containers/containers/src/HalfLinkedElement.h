@@ -1,6 +1,6 @@
 #pragma once
-#ifndef _STACK_ELEMENT_H_
-#define _STACK_ELEMENT_H_
+#ifndef _HALF_LINKED_ELEMENT_H_
+#define _HALF_LINKED_ELEMENT_H_
 
 #include "Element.h"
 

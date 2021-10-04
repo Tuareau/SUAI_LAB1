@@ -1,6 +1,4 @@
-﻿#include <iostream>
-
-#include "Keeper.h"
+﻿#include "Keeper.h"
 
 int main()
 {
