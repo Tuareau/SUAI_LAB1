@@ -94,7 +94,7 @@ public:
 };
 
 template <typename ValueType>
-Array<ValueType>::Array() : array_alloc(NULL), size(0), used(0)
+Array<ValueType>::Array() : array_alloc(nullptr), size(0), used(0)
 {}
 
 template <typename ValueType>

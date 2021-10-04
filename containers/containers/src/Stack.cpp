@@ -49,7 +49,7 @@ void Stack::clear() {
 		_top = _top->ptr();
 		delete curr;
 	}
-	_is_empty = true; _size = 0;
+	_is_empty = true; _size = 0; _top = nullptr;
 }
 
 const HalfLinkedElement & Stack::top() const {

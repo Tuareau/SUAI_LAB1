@@ -14,7 +14,7 @@ public:
 	AbstractQueue() : _size(0), _is_empty(true) {}
 	AbstractQueue(const AbstractQueue & qu) : _size(qu._size), _is_empty(qu._is_empty) {}
 	AbstractQueue(AbstractQueue && qu) noexcept = default;
-	~AbstractQueue() = default;
+	virtual ~AbstractQueue() = default;
 
 	size_t size() const { return _size; }
 	bool empty() const { return _is_empty; }

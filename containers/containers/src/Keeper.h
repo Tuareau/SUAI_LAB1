@@ -2,7 +2,6 @@
 #ifndef _KEEPER_H_
 #define _KEEPER_H_
 
-#include "Array.h"
 #include "AbstractQueue.h"
 #include "Deque.h"
 #include "Stack.h"
@@ -16,14 +15,12 @@
 
 class Keeper
 {
-public:
-	enum class ContainerType;
-
 private:
-	Array<AbstractQueue *> _containers;
-	bool has_stack, has_deque, has_list;
 	const static size_t CONTAINERS = 3;
+	AbstractQueue * _containers[CONTAINERS];
+	bool _has_stack, _has_deque, _has_list;
 
+	enum class ContainerType { DEQUE = 1, STACK, FORWARD_LIST, NONE };
 	AbstractQueue * find_container(ContainerType type) const;
 
 	void add_container(AbstractQueue * container);
@@ -33,14 +30,6 @@ private:
 
 	enum process_menu { ENQUEUE = 1, DEQUEUE, OUTPUT, END };
 
-public:
-	Keeper();
-	Keeper(const Keeper &) = delete;
-	Keeper(Keeper &&) = delete;
-	~Keeper();
-
-	enum class ContainerType { STACK, DEQUE, FORWARD_LIST, NONE };
-
 	void add();
 	void remove();
 	void save() const;
@@ -48,8 +37,15 @@ public:
 	void output() const;
 	void process();
 
-	void run();
 	enum menu { ADD = 1, DELETE, SAVE, LOAD, PROCESS, QUIT };
+
+public:
+	Keeper();
+	Keeper(const Keeper &) = delete;
+	Keeper(Keeper &&) = delete;
+	~Keeper();
+
+	void run();
 
 };
 

@@ -26,7 +26,6 @@
     <ClCompile Include="src\Stack.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Array.h" />
     <ClInclude Include="src\ForwardList.h" />
     <ClInclude Include="src\Keeper.h" />
     <ClInclude Include="src\LinkedElement.h" />

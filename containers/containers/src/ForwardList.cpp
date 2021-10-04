@@ -48,22 +48,23 @@ void ForwardList::clear() {
 		_head = _head->ptr();
 		delete curr;
 	}
-	_is_empty = true; _size = 0;
+	_is_empty = true; _size = 0; _head = nullptr;
 }
 
 void ForwardList::push(const Element & el) {
 	using std::cout;
-	enum choices { FRONT = 1, BACK, INDEX };
+	enum choices { FRONT = 1, BACK, INDEX, CANCEL };
 	int choice = 0;
-	cout << "\nDeque asks where to push:\n";
+	cout << "\nForward list asks where to push:\n";
 	cout << "1 - front\n";
 	cout << "2 - back\n";
 	cout << "3 - by index\n";
+	cout << "4 - cancel\n";
 
 	IInput<int> input;
 	choice = input.getValueFromInput();
-	if (choice < FRONT || choice > INDEX) {
-		cout << "Wrong choice, canceled\n";
+	if (choice < FRONT || choice > CANCEL) {
+		cout << "\nWrong choice, canceled\n";
 		return;
 	}
 
@@ -76,8 +77,11 @@ void ForwardList::push(const Element & el) {
 		push_back(el);
 		break;
 	case INDEX:
+		cout << "\nPut index (0 - " << this->size() << "): ";
 		idx = (size_t)input.getValueFromInput();
 		insert(idx, el);
+		break;
+	case CANCEL:
 		break;
 	default:
 		break;
@@ -85,18 +89,21 @@ void ForwardList::push(const Element & el) {
 }
 
 void ForwardList::pop() {
+	if (this->empty())
+		throw std::out_of_range("ForwardList::pop(): list was empty");
 	using std::cout;
-	enum choices { FRONT = 1, BACK, INDEX };
+	enum choices { FRONT = 1, BACK, INDEX, CANCEL };
 	int choice = 0;
-	cout << "\nDeque asks where to pop:\n";
+	cout << "\nForward list asks where to pop from:\n";
 	cout << "1 - front\n";
 	cout << "2 - back\n";
 	cout << "3 - by index\n";
+	cout << "4 - cancel\n";
 
 	IInput<int> input;
 	choice = input.getValueFromInput();
-	if (choice < FRONT || choice > INDEX) {
-		cout << "Wrong choice, canceled\n";
+	if (choice < FRONT || choice > CANCEL) {
+		cout << "\nWrong choice, canceled\n";
 		return;
 	}
 
@@ -109,8 +116,11 @@ void ForwardList::pop() {
 		pop_back();
 		break;
 	case INDEX:
+		cout << "\nPut index (0 - " << this->size() - 1 << "): ";
 		idx = (size_t)input.getValueFromInput();
 		erase(idx);
+		break;
+	case CANCEL:
 		break;
 	default:
 		break;
@@ -131,8 +141,6 @@ void ForwardList::push_back(const Element & el) {
 }
 
 void ForwardList::pop_back() {
-	if (this->empty())
-		throw std::out_of_range("ForwardList::pop_back(): list was empty");
 	HalfLinkedElement * last = _head;
 	HalfLinkedElement * beside = nullptr;
 	while (last->ptr()) {
@@ -167,13 +175,13 @@ void ForwardList::push_front(const Element & el) {
 }
 
 void ForwardList::pop_front() {
-	if (this->empty())
-		throw std::out_of_range("ForwardList::pop_front(): list was empty");
 	HalfLinkedElement * element = _head;
 	_head = _head->ptr();
 	delete element;
-	_size--;
-	if (!_size) _is_empty = true;
+	if (!--_size) {
+		_is_empty = true;
+		_head = nullptr;
+	}
 }
 
 const HalfLinkedElement & ForwardList::front() const {
@@ -190,11 +198,12 @@ void ForwardList::insert(size_t idx, const Element & el) {
 	while (--idx)
 		curr = curr->ptr();
 
-	if (curr == _head || curr == nullptr) {
-		if (!idx)
-			push_front(el);
-		else
-			push_back(el);
+	if (curr == _head) {
+		push_front(el);
+		return;
+	}
+	if (!curr) {
+		push_back(el);
 		return;
 	}
 
@@ -216,10 +225,15 @@ void ForwardList::erase(size_t idx) {
 		curr = curr->ptr();
 	}
 
+	if (curr == _head) {
+		pop_front();
+		return;
+	}
+
 	beside->set_ptr(curr->ptr());
 	delete curr;
 
-	if (--_size) {
+	if (!(--_size)) {
 		_head = nullptr;
 		_is_empty = true;
 	}

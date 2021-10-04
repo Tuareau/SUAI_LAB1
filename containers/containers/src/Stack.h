@@ -34,7 +34,7 @@ public:
 	private:
 		HalfLinkedElement * _ptr;
 	public:
-		Iterator();
+		Iterator() : _ptr(nullptr) {}
 		explicit Iterator(HalfLinkedElement * ptr) : _ptr(ptr) {}
 		Iterator(const Iterator & iter) : _ptr(iter._ptr) {}
 		~Iterator() = default;

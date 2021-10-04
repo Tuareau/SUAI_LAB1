@@ -49,7 +49,7 @@ public:
 	private:
 		LinkedElement * _ptr;
 	public:
-		Iterator();
+		Iterator() : _ptr(nullptr) {}
 		explicit Iterator(LinkedElement * ptr) : _ptr(ptr) {}
 		Iterator(const Iterator & iter) : _ptr(iter._ptr) {}
 		~Iterator() = default;
