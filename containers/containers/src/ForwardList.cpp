@@ -42,6 +42,10 @@ void ForwardList::copy(const ForwardList & other) {
 	}
 }
 
+AbstractQueue::ContainerType ForwardList::type() const {
+	return AbstractQueue::ContainerType::FORWARD_LIST;
+}
+
 void ForwardList::clear() {
 	while (_head) {
 		HalfLinkedElement * curr = _head;

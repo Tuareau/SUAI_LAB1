@@ -31,6 +31,8 @@ public:
 	void pop_back();
 	void pop_front();
 
+	virtual ContainerType type() const override;
+
 	virtual void push(const Element & el) override;
 	virtual void pop() override;
 

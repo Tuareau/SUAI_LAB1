@@ -20,6 +20,10 @@ Deque::Deque(Deque && other) noexcept : AbstractQueue() {
 	other._is_empty = true;
 }
 
+AbstractQueue::ContainerType Deque::type() const {
+	return AbstractQueue::ContainerType::DEQUE;
+}
+
 void Deque::copy(const Deque & other) {
 	clear();
 	if (other.empty()) {

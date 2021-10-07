@@ -74,3 +74,7 @@ void Stack::pop() {
 	_size--;
 	if (!_top) _is_empty = true;
 }
+
+AbstractQueue::ContainerType Stack::type() const {
+	return AbstractQueue::ContainerType::STACK;
+}

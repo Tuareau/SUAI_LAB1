@@ -19,6 +19,11 @@ public:
 	size_t size() const { return _size; }
 	bool empty() const { return _is_empty; }
 
+	const static size_t CONTAINERS_COUNT = 3;
+	enum class ContainerType { DEQUE, STACK, FORWARD_LIST, NONE };
+
+	virtual ContainerType type() const = 0;
+
 	virtual void push(const Element & el) = 0;
 	virtual void pop() = 0;
 

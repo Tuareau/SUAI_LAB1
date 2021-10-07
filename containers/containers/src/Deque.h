@@ -41,6 +41,8 @@ public:
 	void pop_back();
 	void pop_front();
 
+	virtual ContainerType type() const override;
+
 	void insert(size_t idx, const Element & el);
 	void erase(size_t idx);
 

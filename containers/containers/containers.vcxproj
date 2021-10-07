@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\ContainersFactory.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Deque.cpp" />
     <ClCompile Include="src\ForwardList.cpp" />
@@ -26,6 +27,7 @@
     <ClCompile Include="src\Stack.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\ContainersFactory.h" />
     <ClInclude Include="src\ForwardList.h" />
     <ClInclude Include="src\Keeper.h" />
     <ClInclude Include="src\LinkedElement.h" />

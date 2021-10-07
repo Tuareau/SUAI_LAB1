@@ -29,6 +29,8 @@ public:
 	virtual void push(const Element & el) override;
 	virtual void pop() override;
 
+	virtual ContainerType type() const override;
+
 	class Iterator
 	{
 	private:
