@@ -233,7 +233,7 @@ void Keeper::output() const {
 		if (deque->empty())
 			std::cout << "- empty\n";
 		else {
-			for (Deque::Iterator iter = deque->begin(); iter.ptr() != nullptr; ++iter)
+			for (Deque::Iterator iter = deque->cbegin(); iter.ptr() != nullptr; ++iter)
 				std::cout << (*iter).value() << " ";
 			std::cout << std::endl;
 		}
@@ -246,7 +246,7 @@ void Keeper::output() const {
 		if (stack->empty())
 			std::cout << "- empty\n";
 		else {
-			for (Stack::Iterator iter = stack->begin(); iter.ptr() != nullptr; ++iter)
+			for (Stack::ConstForwardIterator iter = stack->cbegin(); iter.ptr() != nullptr; ++iter)
 				std::cout << (*iter).value() << " ";
 			std::cout << std::endl;
 		}
@@ -259,7 +259,7 @@ void Keeper::output() const {
 		if (list->empty())
 			std::cout << "- empty\n";
 		else {
-			for (ForwardList::Iterator iter = list->begin(); iter.ptr() != nullptr; ++iter)
+			for (ForwardList::Iterator iter = list->cbegin(); iter.ptr() != nullptr; ++iter)
 				std::cout << (*iter).value() << " ";
 			std::cout << std::endl;
 		}
@@ -269,29 +269,12 @@ void Keeper::output() const {
 
 void Keeper::save() const {
 	std::ofstream fout("containers.txt", std::ios_base::trunc | std::ios_base::out);
-	Deque * deque = dynamic_cast<Deque *>(find_container(ContainerType::DEQUE));
-	if (deque) {
-		fout << (int)ContainerType::DEQUE << " ";
-		fout << deque->size() << "\n";
-		for (Deque::Iterator iter = deque->begin(); iter.ptr() != nullptr; ++iter)
-			fout << (*iter).value() << " ";
-		fout << std::endl;
-	}
-	Stack * stack = dynamic_cast<Stack *>(find_container(ContainerType::STACK));
-	if (stack) {
-		fout << (int)ContainerType::STACK << " ";
-		fout << stack->size() << "\n";
-		for (Stack::Iterator iter = stack->begin(); iter.ptr() != nullptr; ++iter)
-			fout << (*iter).value() << " ";
-		fout << std::endl;
-	}
-	ForwardList * list = dynamic_cast<ForwardList *>(find_container(ContainerType::FORWARD_LIST));
-	if (list) {
-		fout << (int)ContainerType::FORWARD_LIST << " ";
-		fout << list->size() << "\n";
-		for (ForwardList::Iterator iter = list->begin(); iter.ptr() != nullptr; ++iter)
-			fout << (*iter).value() << " ";
-		fout << std::endl;
+	for (size_t index = 0; index < AbstractQueue::CONTAINERS_COUNT; ++index) {
+		if (_containers[index]) {
+			fout << index << " ";
+			fout << _containers[index]->size() << "\n";			
+			output_container(*(_containers[index]), fout);
+		}
 	}
 	std::cout << "\nEverything was saved successfuly\n";
 	fout.close();

@@ -21,6 +21,9 @@ private:
 	void insert_container(AbstractQueue * container);
 	void remove_container(AbstractQueue::ContainerType type);
 
+	template<class Container>
+	void output_container(const Container & c, const std::ostream & os);
+
 	void clear();
 
 	//enum process_menu { ENQUEUE = 1, DEQUEUE, OUTPUT, END };
@@ -36,12 +39,18 @@ public:
 	void remove(AbstractQueue::ContainerType type);
 	void save() const;
 	void load();
-	template <class Iter>
 	void output() const;
 	void process();
 
 	//void run();
 
 };
+
+template <class Container>
+void Keeper::output_container(const Container & c, const std::ostream & os) {
+	for (const auto iter = c.cbegin(); iter.ptr() != nullptr; ++iter)
+		os << (*iter).value() << " ";
+	os << std::endl;
+}
 
 #endif

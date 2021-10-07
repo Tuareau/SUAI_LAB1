@@ -46,21 +46,21 @@ public:
 	void insert(size_t idx, const Element & el);
 	void erase(size_t idx);
 
-	class Iterator
+	class ConstForwardIterator
 	{
 	private:
 		LinkedElement * _ptr;
 	public:
-		Iterator() : _ptr(nullptr) {}
-		explicit Iterator(LinkedElement * ptr) : _ptr(ptr) {}
-		Iterator(const Iterator & iter) : _ptr(iter._ptr) {}
-		~Iterator() = default;
-		Iterator & operator=(const Iterator & iter) { _ptr = iter._ptr; }
-		Iterator operator++() { _ptr = _ptr->right_ptr(); return Iterator(_ptr); }
-		LinkedElement & operator*() { return *_ptr; }
-		LinkedElement * ptr() { return _ptr; }
+		ConstForwardIterator() : _ptr(nullptr) {}
+		explicit ConstForwardIterator(LinkedElement * ptr) : _ptr(ptr) {}
+		ConstForwardIterator(const ConstForwardIterator & iter) : _ptr(iter._ptr) {}
+		~ConstForwardIterator() = default;
+
+		ConstForwardIterator operator++() { _ptr = _ptr->right_ptr(); return ConstForwardIterator(_ptr); }
+		const LinkedElement & operator*() const { return *_ptr; }
+		const LinkedElement * ptr() const { return _ptr; }
 	};
-	Iterator begin() { return Iterator(_head); }
+	ConstForwardIterator cbegin() const;
 
 };
 

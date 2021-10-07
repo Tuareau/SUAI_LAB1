@@ -78,3 +78,7 @@ void Stack::pop() {
 AbstractQueue::ContainerType Stack::type() const {
 	return AbstractQueue::ContainerType::STACK;
 }
+
+Stack::ConstForwardIterator Stack::cbegin() const {
+	return ConstForwardIterator(_top);
+}

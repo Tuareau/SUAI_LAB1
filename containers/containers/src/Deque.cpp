@@ -279,3 +279,7 @@ void Deque::erase(size_t idx) {
 		_is_empty = true;
 	}
 }
+
+Deque::ConstForwardIterator Deque::cbegin() const {
+	return ConstForwardIterator(_head);
+}

@@ -242,3 +242,7 @@ void ForwardList::erase(size_t idx) {
 		_is_empty = true;
 	}
 }
+
+ForwardList::ConstForwardIterator ForwardList::cbegin() const {
+	return ConstForwardIterator(_head);
+}
