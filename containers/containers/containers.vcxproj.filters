@@ -30,10 +30,13 @@
     <ClCompile Include="src\Keeper.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\ContainersFactory.cpp">
-      <Filter>Файлы заголовков</Filter>
+    <ClCompile Include="src\IOKeeperHandler.cpp">
+      <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="src\KeeperHandler.cpp">
+    <ClCompile Include="src\AutoTestKeeperHandler.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ContainersFactory.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>

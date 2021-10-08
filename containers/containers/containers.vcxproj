@@ -19,8 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\AutoTestKeeperHandler.cpp" />
     <ClCompile Include="src\ContainersFactory.cpp" />
-    <ClCompile Include="src\KeeperHandler.cpp" />
+    <ClCompile Include="src\IOKeeperHandler.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Deque.cpp" />
     <ClCompile Include="src\ForwardList.cpp" />

@@ -14,7 +14,10 @@ public:
 	AbstractKeeperHandler() = default;
 	virtual ~AbstractKeeperHandler() = default;
 
+	const static size_t KEEPER_ACTIONS_COUNT = 6;
 	enum class KeeperAction { ADD = 1, DELETE, SAVE, LOAD, PROCESS, QUIT };
+
+	const static size_t CONTAINER_ACTIONS_COUNT = 4;
 	enum class ContainerAction { ENQUEUE = 1, DEQUEUE, OUTPUT, QUIT };
 
 	virtual KeeperAction get_keeper_action() const = 0;
@@ -40,9 +43,10 @@ public:
 class AutoTestKeeperHandler : public AbstractKeeperHandler
 {
 private:
-	bool _was_saved = false;
-	bool _was_loaded = false;
 	bool _added_containers[AbstractQueue::CONTAINERS_COUNT];
+
+	size_t _keeper_actions_count[KEEPER_ACTIONS_COUNT];
+	size_t _containers_actions_count[CONTAINER_ACTIONS_COUNT];
 public:
 	AutoTestKeeperHandler();
 	~AutoTestKeeperHandler() = default;
