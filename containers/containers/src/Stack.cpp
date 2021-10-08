@@ -82,3 +82,9 @@ AbstractQueue::ContainerType Stack::type() const {
 Stack::ConstForwardIterator Stack::cbegin() const {
 	return ConstForwardIterator(_top);
 }
+
+void Stack::print(std::ostream & os) const {
+	for (auto iter = this->cbegin(); iter.ptr() != nullptr; ++iter)
+		os << (*iter).value() << " ";
+	os << std::endl;
+}

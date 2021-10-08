@@ -46,6 +46,8 @@ public:
 	void insert(size_t idx, const Element & el);
 	void erase(size_t idx);
 
+	virtual void print(std::ostream & os) const override;
+
 	class ConstForwardIterator
 	{
 	private:

@@ -246,3 +246,9 @@ void ForwardList::erase(size_t idx) {
 ForwardList::ConstForwardIterator ForwardList::cbegin() const {
 	return ConstForwardIterator(_head);
 }
+
+void ForwardList::print(std::ostream & os) const {
+	for (auto iter = this->cbegin(); iter.ptr() != nullptr; ++iter)
+		os << (*iter).value() << " ";
+	os << std::endl;
+}

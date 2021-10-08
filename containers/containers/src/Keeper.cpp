@@ -1,18 +1,44 @@
 #include "Keeper.h"
 
-Keeper::Keeper() {
+Keeper::Keeper(AbstractKeeperHandler * handler) : _handler(handler) {
 	for (size_t i = 0; i < AbstractQueue::CONTAINERS_COUNT; ++i)
 		_containers[i] = nullptr;
 }
 
 Keeper::~Keeper() {
 	clear();
+	delete _handler;
 }
 
 void Keeper::clear() {
 	for (size_t i = 0; i < AbstractQueue::CONTAINERS_COUNT; ++i) {
 		delete _containers[i];
 		_containers[i] = nullptr;
+	}
+}
+
+bool Keeper::empty() const {
+	for (size_t i = 0; i < AbstractQueue::CONTAINERS_COUNT; ++i) {
+		if (_containers[i])
+			return false;
+	}
+	return true;
+}
+
+void Keeper::run() {
+	auto action = _handler->get_keeper_action();
+	while (action != AbstractKeeperHandler::KeeperAction::QUIT) {
+		if (action == AbstractKeeperHandler::KeeperAction::ADD)
+			add_container();
+		if (action == AbstractKeeperHandler::KeeperAction::DELETE)
+			remove_container();
+		if (action == AbstractKeeperHandler::KeeperAction::LOAD)
+			load_containers();
+		if (action == AbstractKeeperHandler::KeeperAction::SAVE)
+			save_containers();
+		if (action == AbstractKeeperHandler::KeeperAction::PROCESS)
+			process_containers();
+		action = _handler->get_keeper_action();
 	}
 }
 
@@ -28,7 +54,7 @@ void Keeper::insert_container(AbstractQueue * container) {
 	}
 }
 
-void Keeper::remove_container(AbstractQueue::ContainerType type) {
+void Keeper::erase_container(AbstractQueue::ContainerType type) {
 	const auto index = size_t(type);
 	if (index >= AbstractQueue::CONTAINERS_COUNT)
 		std::cout << "\nThis type of container is not allowed\n";
@@ -40,247 +66,96 @@ void Keeper::remove_container(AbstractQueue::ContainerType type) {
 	else std::cout << "\nKeeper already hasn't container you tried to remove\n";
 }
 
-//void Keeper::run() {
-//	using std::cout;
-//	cout << "\n\tKEEPER\n";
-//	cout << "\n\tKeeper object has information about containers:\n";
-//	cout << "\n\t- Stack\n\t- Deque\n\t- Forward List\n";
-//	cout << "\n\tAny of these can be added once\n";
-//	int choice = 0;
-//	while (choice != QUIT)
-//	{
-//		cout << "\nChoose action:\n";
-//		cout << "1 - add container\n";
-//		cout << "2 - delete container\n";
-//		cout << "3 - load from file\n";
-//		cout << "4 - save in file\n";
-//		cout << "5 - work with containers\n";
-//		cout << "6 - quit\n";
-//
-//		IInput<int> input;
-//		choice = input.getValueFromInput();
-//		if (choice < ADD || choice > QUIT) {
-//			system("cls");
-//			cout << "\nWrong choice, try again\n";
-//			continue;
-//		}
-//
-//		system("cls");
-//		switch (choice) {
-//		case ADD:
-//			add_container();
-//			break;
-//		case DELETE:
-//			remove();
-//			break;
-//		case SAVE:
-//			load();
-//			break;
-//		case LOAD:
-//			save();
-//			break;
-//		case PROCESS:
-//			process();
-//			break;
-//		case QUIT:
-//			break;
-//		default:
-//			break;
-//		}
-//	}
-//}
-
-void Keeper::add_container(AbstractQueue::ContainerType type)
-{
-	//using std::cout;
-	//cout << "\n\tADD CONTAINER\n";
-	//int choice = 0;
-	//cout << "\nWhat type of container:\n";
-	//cout << "1 - add deque\n";
-	//cout << "2 - add stack\n";
-	//cout << "3 - add forward list\n";
-	//cout << "4 - cancel\n";
-
-	//IInput<int> input;
-	//choice = input.getValueFromInput();
-	//if (choice < (int)AbstractQueue::ContainerType::DEQUE
-	//	|| choice >(int)AbstractQueue::ContainerType::NONE) {
-	//	cout << "\nWrong choice, canceled\n";
-	//	return;
-	//}
-
-	//system("cls");
+void Keeper::add_container() {
+	std::cout << "\n\tADD CONTAINER\n";
+	AbstractQueue::ContainerType type = _handler->get_container_type();
 	AbstractQueue * container = _factory.make_container(type);
 	insert_container(container);
 }
 
-void Keeper::remove(AbstractQueue::ContainerType type) {
-	//using std::cout;
-	//cout << "\n\tDELETE CONTAINER\n";
-	//int choice = 0;
-	//cout << "\nWhat type of container:\n";
-	//cout << "1 - delete deque\n";
-	//cout << "2 - delete stack\n";
-	//cout << "3 - delete forward list\n";
-	//cout << "4 - cancel\n";
-
-	//IInput<int> input;
-	//choice = input.getValueFromInput();
-	//if (choice < (int)AbstractQueue::ContainerType::DEQUE
-	//	|| choice >(int)AbstractQueue::ContainerType::NONE) {
-	//	cout << "\nWrong choice, canceled\n";
-	//	return;
-	//}
-
-	//system("cls");
-	remove_container(type);
+void Keeper::remove_container() {
+	std::cout << "\n\tDELETE CONTAINER\n";
+	AbstractQueue::ContainerType type = _handler->get_container_type();
+	erase_container(type);
 }
 
-void Keeper::process() {
-	using std::cout;
-	cout << "\n\tWORK WITH CONTAINERS\n";
-	int choice = 0;
-	while (choice != END) {
-		cout << "\nNote that we'll work with all containers at one time:\n";
-		cout << "\nContainers manipulations:\n";
-		cout << "1 - add element\n";
-		cout << "2 - delete element\n";
-		cout << "3 - output\n";
-		cout << "4 - cancel\n";
+void Keeper::process_containers() {
+	auto action = _handler->get_container_action();
+	while (action != AbstractKeeperHandler::ContainerAction::QUIT) {
+		if (action == AbstractKeeperHandler::ContainerAction::ENQUEUE)
+			process_enqueue();
+		if (action == AbstractKeeperHandler::ContainerAction::DEQUEUE)
+			process_dequeue();
+		if (action == AbstractKeeperHandler::ContainerAction::OUTPUT)
+			print_containers();
+		action = _handler->get_container_action();
+	}
+}
 
-		IInput<int> input;
-		choice = input.getValueFromInput();
-		if (choice < ENQUEUE
-			|| choice > END) {
-			system("cls");
-			cout << "\nWrong choice, try again\n";
-			continue;
-		}
+void Keeper::process_enqueue() {
+	if (!empty()) {
+		const auto element = _handler->get_element();
+		for (size_t i = 0; i < AbstractQueue::CONTAINERS_COUNT; ++i)
+			if (_containers[i])
+				_containers[i]->push(element);
+	}
+	else std::cout << "\nNo containers to push to\n";
+}
 
-		int value;
-		system("cls");
-		switch (choice) {
-		case ENQUEUE:
-			if (!_has_deque && !_has_stack && !_has_list)
-				cout << "\nNo containers to push to\n";
-			else {
-				cout << "\nPut your element: ";
-				value = input.getValueFromInput();
-				for (size_t i = 0; i < CONTAINERS; ++i)
-					if (_containers[i])
-						_containers[i]->push(Element(value));
+void Keeper::process_dequeue() {
+	if (!empty()) {
+		for (size_t i = 0; i < AbstractQueue::CONTAINERS_COUNT; ++i)
+			if (_containers[i]) {
+				try {
+					_containers[i]->pop();
+				}
+				catch (const std::out_of_range & range_error) {
+					std::cout << "\nException catched: " << range_error.what() << std::endl;
+				}
+				catch (const std::invalid_argument & arg_error) {
+					std::cout << "\nException catched: " << arg_error.what() << std::endl;
+				}
 			}
-			break;
-		case DEQUEUE:
-			if (!_has_deque && !_has_stack && !_has_list)
-				cout << "\nNo containers to pop from\n";
-			else {
-				for (size_t i = 0; i < CONTAINERS; ++i)
-					if (_containers[i]) {
-						try {
-							_containers[i]->pop();
-						}
-						catch (const std::out_of_range & range_error) {
-							std::cout << "\nException catched: " << range_error.what() << std::endl;
-						}
-						catch (const std::invalid_argument & arg_error) {
-							std::cout << "\nException catched: " << arg_error.what() << std::endl;
-						}
-					}
-			}
-			break;
-		case OUTPUT:
-			output();
-			break;
-		case END:
-			cout << "\nDon't forget to save changes in file\n";
-			break;
-		default:
-			break;
-		}
+	}
+	else std::cout << "\nNo container to pop from\n";
+}
+
+void Keeper::print_containers() const {
+	for (size_t i = 0; i < AbstractQueue::CONTAINERS_COUNT; ++i) {
+		print_type(static_cast<AbstractQueue::ContainerType>(i));
+		std::cout << std::endl;
+		if (_containers[i])
+			if (_containers[i]->empty())
+				std::cout << " - empty\n";
+			else
+				_containers[i]->print(std::cout);
+		else std::cout << " - no container\n";
 	}
 }
 
-//AbstractQueue * Keeper::find_container(ContainerType type) const {
-//	switch (type) {
-//	case ContainerType::DEQUE:
-//		for (size_t i = 0; i < CONTAINERS; ++i)
-//			if (dynamic_cast<Deque *>(_containers[i]))
-//				return _containers[i];
-//		break;
-//	case ContainerType::STACK:
-//		for (size_t i = 0; i < CONTAINERS; ++i)
-//			if (dynamic_cast<Stack *>(_containers[i]))
-//				return _containers[i];
-//		break;
-//	case ContainerType::FORWARD_LIST:
-//		for (size_t i = 0; i < CONTAINERS; ++i)
-//			if (dynamic_cast<ForwardList *>(_containers[i]))
-//				return _containers[i];
-//		break;
-//	case ContainerType::NONE:
-//		break;
-//	default:
-//		break;
-//	}
-//	return nullptr;
-//}
-
-void Keeper::output() const {
-	std::cout << "\nDEQUE\n\n";
-	Deque * deque = dynamic_cast<Deque *>(find_container(ContainerType::DEQUE));
-	if (deque) {
-		if (deque->empty())
-			std::cout << "- empty\n";
-		else {
-			for (Deque::Iterator iter = deque->cbegin(); iter.ptr() != nullptr; ++iter)
-				std::cout << (*iter).value() << " ";
-			std::cout << std::endl;
-		}
-	}
-	else std::cout << "- no deque\n";
-	
-	std::cout << "\nSTACK\n\n";
-	Stack * stack = dynamic_cast<Stack *>(find_container(ContainerType::STACK));
-	if (stack) {
-		if (stack->empty())
-			std::cout << "- empty\n";
-		else {
-			for (Stack::ConstForwardIterator iter = stack->cbegin(); iter.ptr() != nullptr; ++iter)
-				std::cout << (*iter).value() << " ";
-			std::cout << std::endl;
-		}
-	}
-	else std::cout << "- no stack\n";
-
-	std::cout << "\nFORWARD LIST\n\n";
-	ForwardList * list = dynamic_cast<ForwardList *>(find_container(ContainerType::FORWARD_LIST));
-	if (list) {
-		if (list->empty())
-			std::cout << "- empty\n";
-		else {
-			for (ForwardList::Iterator iter = list->cbegin(); iter.ptr() != nullptr; ++iter)
-				std::cout << (*iter).value() << " ";
-			std::cout << std::endl;
-		}
-	}
-	else std::cout << "- no forward list\n";
+void Keeper::print_type(AbstractQueue::ContainerType type) const {
+	if (type == AbstractQueue::ContainerType::DEQUE)
+		std::cout << "\nDEQUE\n";
+	if (type == AbstractQueue::ContainerType::STACK)
+		std::cout << "\nSTACK\n";
+	if (type == AbstractQueue::ContainerType::FORWARD_LIST)
+		std::cout << "\nFORWARD LIST\n";
 }
 
-void Keeper::save() const {
+void Keeper::save_containers() const {
 	std::ofstream fout("containers.txt", std::ios_base::trunc | std::ios_base::out);
 	for (size_t index = 0; index < AbstractQueue::CONTAINERS_COUNT; ++index) {
 		if (_containers[index]) {
 			fout << index << " ";
-			fout << _containers[index]->size() << "\n";			
-			output_container(*(_containers[index]), fout);
+			fout << _containers[index]->size() << "\n";
+			_containers[index]->print(fout);
 		}
 	}
 	std::cout << "\nEverything was saved successfuly\n";
 	fout.close();
 }
 
-void Keeper::load() {
+void Keeper::load_containers() {
 	std::ifstream fin("containers.txt", std::ios_base::in);
 	clear();
 	if (!fin.good()) {
@@ -288,38 +163,23 @@ void Keeper::load() {
 		return;
 	}
 
-	int type, value;
-	size_t size;
-	AbstractQueue * container = nullptr;
+	int id, value; size_t size;
 	while (fin.good() && !fin.eof() && fin.peek() != EOF) {
-		if (!(fin >> type >> size))
+		if (!(fin >> id >> size))
 			break;
-		switch (type) {
-		case (int)ContainerType::DEQUE:
-			container = new Deque;
-			while (size--) {
-				fin >> value;
-				dynamic_cast<Deque *>(container)->push_back(Element(value));
+		auto type = static_cast<AbstractQueue::ContainerType>(id);
+		auto container = _factory.make_container(type);
+		while (size--) {
+			if (fin >> value) {
+				if (type == AbstractQueue::ContainerType::DEQUE)
+					dynamic_cast<Deque *>(container)->push_back(Element(value));
+				else if (type == AbstractQueue::ContainerType::FORWARD_LIST)
+					dynamic_cast<ForwardList *>(container)->push_back(Element(value));
+				else container->push(Element(value));
 			}
-			break;
-		case (int)ContainerType::STACK:
-			container = new Stack;
-			while (size--) {
-				fin >> value;
-				container->push(Element(value));
-			}
-			break;
-		case (int)ContainerType::FORWARD_LIST:
-			container = new ForwardList;
-			while (size--) {
-				fin >> value;
-				dynamic_cast<ForwardList *>(container)->push_back(Element(value));
-			}
-			break;
-		default:
-			break;
+			else break;
 		}
-		insert_container(container);		
+		insert_container(container);	
 	}
 	std::cout << "\nEverything was loaded successfuly\n";
 	fin.close();

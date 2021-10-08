@@ -283,3 +283,9 @@ void Deque::erase(size_t idx) {
 Deque::ConstForwardIterator Deque::cbegin() const {
 	return ConstForwardIterator(_head);
 }
+
+void Deque::print(std::ostream & os) const {
+	for (auto iter = this->cbegin(); iter.ptr() != nullptr; ++iter)
+		os << (*iter).value() << " ";
+	os << std::endl;
+}

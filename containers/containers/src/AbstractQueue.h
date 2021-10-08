@@ -4,6 +4,8 @@
 
 #include "Element.h"
 
+#include <iostream>
+
 class AbstractQueue
 {
 protected:
@@ -26,6 +28,8 @@ public:
 
 	virtual void push(const Element & el) = 0;
 	virtual void pop() = 0;
+
+	virtual void print(std::ostream & os) const = 0;
 
 };
 

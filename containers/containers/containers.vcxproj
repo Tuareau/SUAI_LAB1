@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ContainersFactory.cpp" />
+    <ClCompile Include="src\KeeperHandler.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Deque.cpp" />
     <ClCompile Include="src\ForwardList.cpp" />
@@ -30,6 +31,7 @@
     <ClInclude Include="src\ContainersFactory.h" />
     <ClInclude Include="src\ForwardList.h" />
     <ClInclude Include="src\Keeper.h" />
+    <ClInclude Include="src\KeeperHandler.h" />
     <ClInclude Include="src\LinkedElement.h" />
     <ClInclude Include="src\Deque.h" />
     <ClInclude Include="src\Element.h" />

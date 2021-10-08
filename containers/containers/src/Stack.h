@@ -31,6 +31,8 @@ public:
 
 	virtual ContainerType type() const override;
 
+	virtual void print(std::ostream & os) const override;
+
 	class ConstForwardIterator
 	{
 	private:
