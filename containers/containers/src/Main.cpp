@@ -3,7 +3,6 @@
 
 int main()
 {
-	//AbstractKeeperHandler * handler(new AutoTestKeeperHandler);
 	AbstractKeeperHandler * handler(new IOKeeperHandler);
 	Keeper containers(handler);
 	containers.run();

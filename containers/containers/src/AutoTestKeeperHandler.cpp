@@ -1,7 +1,7 @@
 #include "KeeperHandler.h"
 
 AutoTestKeeperHandler::AutoTestKeeperHandler() {
-	std::srand(std::time(nullptr));
+	std::srand(unsigned int(std::time(nullptr)));
 	for (size_t i = 0; i < AbstractQueue::CONTAINERS_COUNT; ++i) {
 		_added_containers[i] = false;
 	}

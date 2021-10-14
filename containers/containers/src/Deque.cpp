@@ -32,14 +32,13 @@ void Deque::copy(const Deque & other) {
 	}
 	else {
 		_head = new LinkedElement(other._head->value());
-		LinkedElement * curr;
 		LinkedElement * beside_curr = _head;
 		_is_empty = false; _size++;
 
-		LinkedElement * original = other._head->right_ptr();		
+		LinkedElement * original = other._head->right_ptr();
 
 		while (original) {
-			curr = new LinkedElement(original->value());
+			auto * curr = new LinkedElement(original->value());
 			curr->set_left_ptr(beside_curr);
 			beside_curr->set_right_ptr(curr);
 
@@ -62,19 +61,15 @@ void Deque::clear() {
 void Deque::push(const Element & el) {
 	using std::cout;
 	enum choices { FRONT = 1, BACK, INDEX, CANCEL };
-	int choice = 0;
+	size_t choice = 0;
 	cout << "\nDeque asks where to push:\n";
 	cout << "1 - front\n";
 	cout << "2 - back\n";
 	cout << "3 - by index\n";
 	cout << "4 - cancel\n";
 
-	IInput<int> input;
+	IInput<size_t> input;
 	choice = input.getValueFromInput();
-	if (choice < FRONT || choice > CANCEL) {
-		cout << "\nWrong choice, canceled\n";
-		return;
-	}
 
 	size_t idx;
 	switch (choice) {
@@ -86,13 +81,14 @@ void Deque::push(const Element & el) {
 		break;
 	case INDEX:
 		cout << "\nPut index (0 - " << this->size() << "): ";
-		idx = (size_t)input.getValueFromInput();
+		idx = input.getValueFromInput();
 		insert(idx, el);
 		break;
 	case CANCEL:
 		break;
 	default:
-		break;
+		cout << "\nWrong choice, canceled\n";
+		return;
 	}
 }
 
@@ -102,19 +98,15 @@ void Deque::pop() {
 	}
 	using std::cout;
 	enum choices { FRONT = 1, BACK, INDEX, CANCEL };
-	int choice = 0;
+	size_t choice = 0;
 	cout << "\nDeque asks where to pop from:\n";
 	cout << "1 - front\n";
 	cout << "2 - back\n";
 	cout << "3 - by index\n";
 	cout << "4 - cancel\n";
 
-	IInput<int> input;
+	IInput<size_t> input;
 	choice = input.getValueFromInput();
-	if (choice < FRONT || choice > CANCEL) {
-		cout << "\nWrong choice, canceled\n";
-		return;
-	}
 
 	size_t idx;
 	switch (choice) {
@@ -126,13 +118,14 @@ void Deque::pop() {
 		break;
 	case INDEX:
 		cout << "\nPut index (0 - " << this->size() - 1 << "): ";
-		idx = (size_t)input.getValueFromInput();
+		idx = input.getValueFromInput();
 		erase(idx);
 		break;
 	case CANCEL:
 		break;
 	default:
-		break;
+		cout << "\nWrong choice, canceled\n";
+		return;
 	}
 }
 

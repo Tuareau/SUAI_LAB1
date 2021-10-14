@@ -14,6 +14,7 @@ AbstractQueue * ContainersFactory::make_container(AbstractQueue::ContainerType t
 		break;
 	default:
 		throw std::logic_error("ContainersFactory::make_container(): container type mismatch in switch");
+		break;
 	}
 	return container;
 }

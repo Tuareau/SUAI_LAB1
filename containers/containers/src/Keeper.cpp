@@ -1,8 +1,9 @@
 #include "Keeper.h"
 
 Keeper::Keeper(AbstractKeeperHandler * handler) : _handler(handler) {
-	for (size_t i = 0; i < AbstractQueue::CONTAINERS_COUNT; ++i)
+	for (size_t i = 0; i < AbstractQueue::CONTAINERS_COUNT; ++i) {
 		_containers[i] = nullptr;
+	}
 }
 
 Keeper::~Keeper() {
@@ -58,7 +59,7 @@ void Keeper::insert_container(AbstractQueue * container) {
 	if (index >= AbstractQueue::CONTAINERS_COUNT) {
 		std::cout << "\nYour type of container is not allowed\n";
 	}
-	if (_containers[index]) {
+	else if (_containers[index]) {
 		std::cout << "\nSorry, limited count of that type of container (1) was reached\n";
 	} 
 	else {
@@ -72,7 +73,7 @@ void Keeper::erase_container(AbstractQueue::ContainerType type) {
 	if (index >= AbstractQueue::CONTAINERS_COUNT) {
 		std::cout << "\nThis type of container is not allowed\n";
 	}
-	if (_containers[index]) {
+	else if (_containers[index]) {
 		delete _containers[index];
 		_containers[index] = nullptr;
 		std::cout << "\nContainer was removed successfuly\n";
@@ -84,15 +85,15 @@ void Keeper::erase_container(AbstractQueue::ContainerType type) {
 
 void Keeper::add_container() {
 	std::cout << "\n\tADD CONTAINER\n";
-	AbstractQueue::ContainerType type = _handler->get_container_type();
-	AbstractQueue * container = _factory.make_container(type);
+	const auto container_type = _handler->get_container_type();
+	auto * container = _factory.make_container(container_type);
 	insert_container(container);
 }
 
 void Keeper::remove_container() {
 	std::cout << "\n\tDELETE CONTAINER\n";
-	AbstractQueue::ContainerType type = _handler->get_container_type();
-	erase_container(type);
+	const auto container_type = _handler->get_container_type();
+	erase_container(container_type);
 }
 
 void Keeper::process_containers() {
@@ -110,6 +111,7 @@ void Keeper::process_containers() {
 			break;
 		default:
 			throw std::logic_error("Keeper::process_containers(): container action mismatch in switch");
+			break;
 		}
 		action = _handler->get_container_action();
 	}
@@ -118,10 +120,11 @@ void Keeper::process_containers() {
 void Keeper::process_enqueue() {
 	if (!empty()) {
 		const auto element = _handler->get_element();
-		for (size_t i = 0; i < AbstractQueue::CONTAINERS_COUNT; ++i)
+		for (size_t i = 0; i < AbstractQueue::CONTAINERS_COUNT; ++i) {
 			if (_containers[i]) {
 				_containers[i]->push(element);
 			}
+		}
 	}
 	else {
 		std::cout << "\nNo containers to push to\n";
@@ -152,7 +155,6 @@ void Keeper::process_dequeue() {
 void Keeper::print_containers() const {
 	for (size_t i = 0; i < AbstractQueue::CONTAINERS_COUNT; ++i) {
 		print_type(static_cast<AbstractQueue::ContainerType>(i));
-		std::cout << std::endl;
 		if (_containers[i]) {
 			if (_containers[i]->empty()) {
 				std::cout << " - empty\n";
@@ -170,16 +172,16 @@ void Keeper::print_containers() const {
 void Keeper::print_type(AbstractQueue::ContainerType type) const {
 	switch (type) {
 	case AbstractQueue::ContainerType::DEQUE:
-		std::cout << "\nDEQUE\n";
+		std::cout << "\nDEQUE\n\n";
 		break;
 	case AbstractQueue::ContainerType::STACK:
-		std::cout << "\nSTACK\n";
+		std::cout << "\nSTACK\n\n";
 		break;
 	case AbstractQueue::ContainerType::FORWARD_LIST:
-		std::cout << "\nFORWARD LIST\n";
+		std::cout << "\nFORWARD LIST\n\n";
 		break;
 	default:
-		throw std::logic_error("Keeper::print_type: container type mismatch in switch");
+		throw std::logic_error("Keeper::print_type(): container type mismatch in switch");
 		break;
 	}
 }
