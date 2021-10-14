@@ -26,11 +26,14 @@ AbstractKeeperHandler::KeeperAction IOKeeperHandler::get_keeper_action() const {
 		}
 
 		system("cls");
-		if (choice == 1) return KeeperAction::ADD;
-		if (choice == 2) return KeeperAction::DELETE;
-		if (choice == 3) return KeeperAction::LOAD;
-		if (choice == 4) return KeeperAction::SAVE;
-		if (choice == 5) return KeeperAction::PROCESS;
+		switch (choice) {
+		case 1: return KeeperAction::ADD;
+		case 2: return KeeperAction::DELETE;
+		case 3: return KeeperAction::LOAD;
+		case 4: return KeeperAction::SAVE;
+		case 5: return KeeperAction::PROCESS;
+		default: break;
+		}
 	}
 	return KeeperAction::QUIT;
 }
@@ -52,9 +55,12 @@ AbstractQueue::ContainerType IOKeeperHandler::get_container_type() const {
 	}
 
 	system("cls");
-	if (choice == 1) return AbstractQueue::ContainerType::DEQUE;
-	if (choice == 2) return AbstractQueue::ContainerType::STACK;
-	if (choice == 3) return AbstractQueue::ContainerType::FORWARD_LIST;
+	switch (choice) {
+	case 1: return AbstractQueue::ContainerType::DEQUE;
+	case 2: return AbstractQueue::ContainerType::STACK;
+	case 3: return AbstractQueue::ContainerType::FORWARD_LIST;
+	default: break;
+	}
 	return AbstractQueue::ContainerType::NONE;
 }
 
@@ -80,9 +86,12 @@ AbstractKeeperHandler::ContainerAction IOKeeperHandler::get_container_action() c
 		}
 
 		system("cls");
-		if (choice == 1) return ContainerAction::ENQUEUE;
-		if (choice == 2) return ContainerAction::DEQUEUE;
-		if (choice == 3) return ContainerAction::OUTPUT;
+		switch (choice) {
+		case 1: return ContainerAction::ENQUEUE;
+		case 2: return ContainerAction::DEQUEUE;
+		case 3: return ContainerAction::OUTPUT;
+		default: break;
+		}
 	}
 	return ContainerAction::QUIT;
 }

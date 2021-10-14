@@ -2,12 +2,15 @@
 
 AutoTestKeeperHandler::AutoTestKeeperHandler() {
 	std::srand(std::time(nullptr));
-	for (size_t i = 0; i < AbstractQueue::CONTAINERS_COUNT; ++i)
+	for (size_t i = 0; i < AbstractQueue::CONTAINERS_COUNT; ++i) {
 		_added_containers[i] = false;
-	for (size_t i = 0; i < CONTAINER_ACTIONS_COUNT; ++i)
+	}
+	for (size_t i = 0; i < CONTAINER_ACTIONS_COUNT; ++i) {
 		_containers_actions_count[i] = 0;
-	for (size_t i = 0; i < AbstractQueue::CONTAINERS_COUNT; ++i)
+	}
+	for (size_t i = 0; i < AbstractQueue::CONTAINERS_COUNT; ++i) {
 		_keeper_actions_count[i] = 0;
+	}
 }
 
 AbstractKeeperHandler::KeeperAction AutoTestKeeperHandler::get_keeper_action() const {
@@ -17,7 +20,7 @@ AbstractKeeperHandler::KeeperAction AutoTestKeeperHandler::get_keeper_action() c
 	//return KeeperAction::LOAD;
 	//return KeeperAction::SAVE;
 	//return KeeperAction::PROCESS;
-	//return KeeperAction::QUIT;
+	return KeeperAction::QUIT;
 }
 
 AbstractQueue::ContainerType AutoTestKeeperHandler::get_container_type() const {
@@ -26,7 +29,7 @@ AbstractQueue::ContainerType AutoTestKeeperHandler::get_container_type() const {
 	//return AbstractQueue::ContainerType::DEQUE;
 	//return AbstractQueue::ContainerType::STACK;
 	//return AbstractQueue::ContainerType::FORWARD_LIST;
-	//return AbstractQueue::ContainerType::NONE;
+	return AbstractQueue::ContainerType::NONE;
 }
 
 AbstractKeeperHandler::ContainerAction AutoTestKeeperHandler::get_container_action() const {
@@ -35,7 +38,7 @@ AbstractKeeperHandler::ContainerAction AutoTestKeeperHandler::get_container_acti
 	//return ContainerAction::ENQUEUE;
 	//return ContainerAction::DEQUEUE;
 	//return ContainerAction::OUTPUT;
-	//return ContainerAction::QUIT;
+	return ContainerAction::QUIT;
 }
 
 Element AutoTestKeeperHandler::get_element() const {

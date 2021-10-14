@@ -97,8 +97,9 @@ void Deque::push(const Element & el) {
 }
 
 void Deque::pop() {
-	if (this->empty())
+	if (this->empty()) {
 		throw std::out_of_range("Deque::pop(): deque was empty");
+	}
 	using std::cout;
 	enum choices { FRONT = 1, BACK, INDEX, CANCEL };
 	int choice = 0;
@@ -145,7 +146,9 @@ void Deque::push_back(const Element & el) {
 		last->set_right_ptr(element);
 		element->set_left_ptr(last);
 	}
-	else _head = element;
+	else {
+		_head = element;
+	}
 	_size++; _is_empty = false;
 }
 
@@ -157,8 +160,9 @@ void Deque::pop_back() {
 		last = last->right_ptr();
 	}
 
-	if (beside)
+	if (beside) {
 		beside->set_right_ptr(nullptr);
+	}
 	delete last;
 	_size--;
 	if (!_size) {
@@ -168,8 +172,9 @@ void Deque::pop_back() {
 }
 
 const LinkedElement & Deque::back() const {
-	if (this->empty())
+	if (this->empty()) {
 		throw std::out_of_range("Deque::back(): deque was empty");
+	}
 	LinkedElement * last = _head;
 	while (last->right_ptr())
 		last = last->right_ptr();
@@ -199,14 +204,16 @@ void Deque::pop_front() {
 }
 
 const LinkedElement & Deque::front() const {
-	if (this->empty())
+	if (this->empty()) {
 		throw std::out_of_range("Deque::front(): deque was empty");
+	}
 	return *_head;
 }
 
 const LinkedElement & Deque::at(size_t idx) const {
-	if (idx >= _size)
+	if (idx >= _size) {
 		throw std::invalid_argument("Deque::at(): invalid index");
+	}
 	LinkedElement * curr = _head;
 	while (idx--)
 		curr = curr->right_ptr();
@@ -214,8 +221,9 @@ const LinkedElement & Deque::at(size_t idx) const {
 }
 
 LinkedElement & Deque::at(size_t idx) {
-	if (idx >= _size)
+	if (idx >= _size) {
 		throw std::invalid_argument("Deque::at(): invalid index");
+	}
 	LinkedElement * curr = _head;
 	while (idx--)
 		curr = curr->right_ptr();
@@ -230,12 +238,14 @@ LinkedElement & Deque::operator[](size_t idx) noexcept {
 }
 
 void Deque::insert(size_t idx, const Element & el) {
-	if (idx > _size)
+	if (idx > _size) {
 		throw std::invalid_argument("Deque::insert(): invalid index");
+	}
 
 	LinkedElement * curr = _head;
-	while (idx--)
+	while (idx--) {
 		curr = curr->right_ptr();
+	}
 
 	if (curr == _head) {
 		push_front(el); 
@@ -256,8 +266,9 @@ void Deque::insert(size_t idx, const Element & el) {
 }
 
 void Deque::erase(size_t idx) {
-	if (idx >= _size)
+	if (idx >= _size) {
 		throw std::invalid_argument("Deque::erase(): invalid index");
+	}
 
 	LinkedElement * curr = _head;
 	while (idx--)
@@ -285,7 +296,8 @@ Deque::ConstForwardIterator Deque::cbegin() const {
 }
 
 void Deque::print(std::ostream & os) const {
-	for (auto iter = this->cbegin(); iter.ptr() != nullptr; ++iter)
+	for (auto iter = this->cbegin(); iter.ptr() != nullptr; ++iter) {
 		os << (*iter).value() << " ";
+	}
 	os << std::endl;
 }

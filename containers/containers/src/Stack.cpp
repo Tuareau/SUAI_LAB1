@@ -53,8 +53,9 @@ void Stack::clear() {
 }
 
 const HalfLinkedElement & Stack::top() const {
-	if (this->empty())
+	if (this->empty()) {
 		throw std::out_of_range("Stack::top(): stack was empty");
+	}
 	return *_top;
 }
 
@@ -66,8 +67,9 @@ void Stack::push(const Element & el) {
 }
 
 void Stack::pop() {
-	if (this->empty())
+	if (this->empty()) {
 		throw std::out_of_range("Stack::pop(): stack was empty");
+	}
 	HalfLinkedElement * curr = _top;
 	_top = _top->ptr();
 	delete curr;

@@ -93,8 +93,9 @@ void ForwardList::push(const Element & el) {
 }
 
 void ForwardList::pop() {
-	if (this->empty())
+	if (this->empty()) {
 		throw std::out_of_range("ForwardList::pop(): list was empty");
+	}
 	using std::cout;
 	enum choices { FRONT = 1, BACK, INDEX, CANCEL };
 	int choice = 0;
@@ -140,7 +141,9 @@ void ForwardList::push_back(const Element & el) {
 
 		last->set_ptr(element);
 	}
-	else _head = element;
+	else {
+		_head = element;
+	}
 	_size++; _is_empty = false;
 }
 
@@ -151,8 +154,9 @@ void ForwardList::pop_back() {
 		beside = last;
 		last = last->ptr();
 	}
-	if (beside)
+	if (beside) {
 		beside->set_ptr(nullptr);
+	}
 	delete last;
 	_size--;
 	if (!_size) {
@@ -162,18 +166,21 @@ void ForwardList::pop_back() {
 }
 
 const HalfLinkedElement & ForwardList::back() const {
-	if (this->empty())
+	if (this->empty()) {
 		throw std::out_of_range("ForwardList::back(): list was empty");
+	}
 	HalfLinkedElement * last = _head;
-	while (last->ptr())
+	while (last->ptr()) {
 		last = last->ptr();
+	}
 	return *last;
 }
 
 void ForwardList::push_front(const Element & el) {
 	HalfLinkedElement * element = new HalfLinkedElement(el.value());
-	if (_head)
+	if (_head) {
 		element->set_ptr(_head);
+	}
 	_head = element;
 	++_size; _is_empty = false;
 }
@@ -189,14 +196,16 @@ void ForwardList::pop_front() {
 }
 
 const HalfLinkedElement & ForwardList::front() const {
-	if (this->empty())
+	if (this->empty()) {
 		throw std::out_of_range("ForwardList::front(): list was empty");
+	}
 	return *_head;
 }
 
 void ForwardList::insert(size_t idx, const Element & el) {
-	if (idx > _size)
+	if (idx > _size) {
 		throw std::invalid_argument("ForwardList::insert(): invalid index");
+	}
 
 	HalfLinkedElement * curr = _head;
 	while (--idx)
@@ -219,8 +228,9 @@ void ForwardList::insert(size_t idx, const Element & el) {
 }
 
 void ForwardList::erase(size_t idx) {
-	if (idx >= _size)
+	if (idx >= _size) {
 		throw std::invalid_argument("ForwardList::erase(): invalid index");
+	}
 
 	HalfLinkedElement * curr = _head;
 	HalfLinkedElement * beside = curr;
@@ -248,7 +258,8 @@ ForwardList::ConstForwardIterator ForwardList::cbegin() const {
 }
 
 void ForwardList::print(std::ostream & os) const {
-	for (auto iter = this->cbegin(); iter.ptr() != nullptr; ++iter)
+	for (auto iter = this->cbegin(); iter.ptr() != nullptr; ++iter) {
 		os << (*iter).value() << " ";
+	}
 	os << std::endl;
 }
