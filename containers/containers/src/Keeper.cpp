@@ -1,12 +1,14 @@
 #include "Keeper.h"
 
 Keeper::Keeper(AbstractKeeperHandler * handler) : _handler(handler) {
+	std::cout << "\n# Keeper::Keeper() constructor called\n";
 	for (size_t i = 0; i < AbstractQueue::CONTAINERS_COUNT; ++i) {
 		_containers[i] = nullptr;
 	}
 }
 
 Keeper::~Keeper() {
+	std::cout << "\n# Keeper::~Keeper() destructor called\n";
 	clear();
 	delete _handler;
 }

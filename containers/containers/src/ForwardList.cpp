@@ -1,16 +1,21 @@
 #include "ForwardList.h"
 
-ForwardList::ForwardList() : AbstractQueue(), _head(nullptr) {}
+ForwardList::ForwardList() : AbstractQueue(), _head(nullptr) {
+	std::cout << "\n# ForwardList::ForwardList() constructor called\n";
+}
 
 ForwardList::ForwardList(const ForwardList & other) : AbstractQueue() {
 	copy(other);
+	std::cout << "\n# ForwardList::ForwardList(const ForwardList &) constructor called\n";
 }
 
 ForwardList::~ForwardList() {
+	std::cout << "\n# ForwardList::~ForwardList() destructor called\n";
 	clear();
 }
 
 ForwardList::ForwardList(ForwardList && other) noexcept : AbstractQueue() {
+	std::cout << "\n# ForwardList::ForwardList(ForwardList &&) constructor called\n";
 	_head = other._head;
 	_is_empty = other._is_empty;
 	_size = other._size;

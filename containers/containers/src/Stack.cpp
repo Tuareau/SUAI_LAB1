@@ -1,9 +1,12 @@
 #include "Stack.h"
 
 Stack::Stack() 
-	: _top(nullptr), AbstractQueue() {}
+	: _top(nullptr), AbstractQueue() {
+	std::cout << "\n# Stack::Stack() constructor called\n";
+}
 
 Stack::Stack(const Stack & other) : AbstractQueue() {
+	std::cout << "\n# Stack::Stack(const Stack &) constructor called\n";
 	copy(other);
 }
 
@@ -30,6 +33,7 @@ void Stack::copy(const Stack & other) {
 }
 
 Stack::Stack(Stack && other) noexcept : AbstractQueue() {
+	std::cout << "\n# Stack::Stack(Stack &&) constructor called\n";
 	_top = other._top;
 	_is_empty = other._is_empty;
 	_size = other._size;
@@ -40,6 +44,7 @@ Stack::Stack(Stack && other) noexcept : AbstractQueue() {
 }
 
 Stack::~Stack() {
+	std::cout << "\n# Stack::~Stack() destructor called\n";
 	clear();
 }
 

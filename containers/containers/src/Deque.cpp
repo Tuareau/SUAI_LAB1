@@ -1,16 +1,21 @@
 #include "Deque.h"
 
-Deque::Deque() : AbstractQueue(), _head(nullptr) {}
+Deque::Deque() : AbstractQueue(), _head(nullptr) {
+	std::cout << "\n# Deque::Deque() constructor called\n";
+}
 
 Deque::Deque(const Deque & other) : AbstractQueue() {
+	std::cout << "\n# Deque::Deque(const Deque &) constructor called\n";
 	copy(other);
 }
 
 Deque::~Deque() {
+	std::cout << "\n# Deque::~Deque() destructor called\n";
 	clear();
 }
 
 Deque::Deque(Deque && other) noexcept : AbstractQueue() {
+	std::cout << "\n# Deque::Deque(Deque &&) constructor called\n";
 	_head = other._head;
 	_is_empty = other._is_empty;
 	_size = other._size;
