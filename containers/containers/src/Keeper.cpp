@@ -56,46 +56,63 @@ void Keeper::run() {
 	}
 }
 
+bool Keeper::has_container(AbstractQueue::ContainerType type) {
+	const auto index = size_t(type);
+	if (index >= AbstractQueue::CONTAINERS_COUNT) {
+		return false;
+	}
+	else if (_containers[index]) {
+		return true;
+	}
+	return false;
+}
+
 void Keeper::insert_container(AbstractQueue * container) {
 	const auto index = size_t(container->type());
 	if (index >= AbstractQueue::CONTAINERS_COUNT) {
-		std::cout << "\nYour type of container is not allowed\n";
+		throw std::logic_error("Keeper::insert_container(): container type is not allowed");
 	}
-	else if (_containers[index]) {
-		std::cout << "\nSorry, limited count of that type of container (1) was reached\n";
-	} 
-	else {
+	else if (!_containers[index]) {
 		_containers[index] = container;
-		std::cout << "\nContainer was added successfuly\n";
 	}
 }
 
 void Keeper::erase_container(AbstractQueue::ContainerType type) {
 	const auto index = size_t(type);
 	if (index >= AbstractQueue::CONTAINERS_COUNT) {
-		std::cout << "\nThis type of container is not allowed\n";
+		throw std::logic_error("Keeper::insert_container(): container type is not allowed");
 	}
 	else if (_containers[index]) {
 		delete _containers[index];
 		_containers[index] = nullptr;
-		std::cout << "\nContainer was removed successfuly\n";
-	}
-	else {
-		std::cout << "\nKeeper already hasn't container you tried to remove\n";
 	}
 }
 
 void Keeper::add_container() {
 	std::cout << "\n\tADD CONTAINER\n";
 	const auto container_type = _handler->get_container_type();
-	auto * container = _factory.make_container(container_type);
-	insert_container(container);
+	if (!has_container(container_type)) {
+		auto * container = _factory.make_container(container_type);
+		if (container) {
+			insert_container(container);
+			std::cout << "\nContainer was added successfuly\n";
+		}
+	}
+	else {
+		std::cout << "\nSorry, limited count of that type of container (1) was reached\n";
+	}
 }
 
 void Keeper::remove_container() {
 	std::cout << "\n\tDELETE CONTAINER\n";
 	const auto container_type = _handler->get_container_type();
-	erase_container(container_type);
+	if (has_container(container_type)) {
+		erase_container(container_type);
+		std::cout << "\nContainer was removed successfuly\n";
+	}
+	else {
+		std::cout << "\nKeeper already hasn't container you tried to remove\n";
+	}
 }
 
 void Keeper::process_containers() {

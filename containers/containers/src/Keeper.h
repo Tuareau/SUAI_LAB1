@@ -24,6 +24,8 @@ private:
 	bool empty() const;
 	void clear();
 
+	bool has_container(AbstractQueue::ContainerType type);
+
 	void add_container();
 	void remove_container();
 

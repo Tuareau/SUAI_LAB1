@@ -12,6 +12,8 @@ AbstractQueue * ContainersFactory::make_container(AbstractQueue::ContainerType t
 	case AbstractQueue::ContainerType::FORWARD_LIST:
 		container = new ForwardList;
 		break;
+	case AbstractQueue::ContainerType::NONE:
+		break;
 	default:
 		throw std::logic_error("ContainersFactory::make_container(): container type mismatch in switch");
 		break;
