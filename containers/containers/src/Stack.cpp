@@ -53,8 +53,9 @@ void Stack::clear() {
 }
 
 const HalfLinkedElement & Stack::top() const {
-	if (this->empty())
+	if (this->empty()) {
 		throw std::out_of_range("Stack::top(): stack was empty");
+	}
 	return *_top;
 }
 
@@ -66,11 +67,26 @@ void Stack::push(const Element & el) {
 }
 
 void Stack::pop() {
-	if (this->empty())
+	if (this->empty()) {
 		throw std::out_of_range("Stack::pop(): stack was empty");
+	}
 	HalfLinkedElement * curr = _top;
 	_top = _top->ptr();
 	delete curr;
 	_size--;
 	if (!_top) _is_empty = true;
+}
+
+AbstractQueue::ContainerType Stack::type() const {
+	return AbstractQueue::ContainerType::STACK;
+}
+
+Stack::ConstForwardIterator Stack::cbegin() const {
+	return ConstForwardIterator(_top);
+}
+
+void Stack::print(std::ostream & os) const {
+	for (auto iter = this->cbegin(); iter.ptr() != nullptr; ++iter)
+		os << (*iter).value() << " ";
+	os << std::endl;
 }

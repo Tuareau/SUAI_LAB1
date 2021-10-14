@@ -1,8 +1,10 @@
 ﻿#include "Keeper.h"
+#include "KeeperHandler.h"
 
 int main()
 {
-	Keeper containers;
+	AbstractKeeperHandler * handler(new IOKeeperHandler);
+	Keeper containers(handler);
 	containers.run();
 	return 0;
 }

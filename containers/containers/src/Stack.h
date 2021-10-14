@@ -29,21 +29,25 @@ public:
 	virtual void push(const Element & el) override;
 	virtual void pop() override;
 
-	class Iterator
+	virtual ContainerType type() const override;
+
+	virtual void print(std::ostream & os) const override;
+
+	class ConstForwardIterator
 	{
 	private:
 		HalfLinkedElement * _ptr;
 	public:
-		Iterator() : _ptr(nullptr) {}
-		explicit Iterator(HalfLinkedElement * ptr) : _ptr(ptr) {}
-		Iterator(const Iterator & iter) : _ptr(iter._ptr) {}
-		~Iterator() = default;
-		Iterator & operator=(const Iterator & iter) { _ptr = iter._ptr; }
-		Iterator operator++() { _ptr = _ptr->ptr(); return Iterator(_ptr); }
-		HalfLinkedElement & operator*() { return *_ptr; }
-		HalfLinkedElement * ptr() { return _ptr; }
+		ConstForwardIterator() : _ptr(nullptr) {}
+		explicit ConstForwardIterator(HalfLinkedElement * ptr) : _ptr(ptr) {}
+		ConstForwardIterator(const ConstForwardIterator & iter) : _ptr(iter._ptr) {}
+		~ConstForwardIterator() = default;
+
+		ConstForwardIterator operator++() { _ptr = _ptr->ptr(); return ConstForwardIterator(_ptr); }
+		const HalfLinkedElement & operator*() const { return *_ptr; }
+		const HalfLinkedElement * ptr() const { return _ptr; }
 	};
-	Iterator begin() { return Iterator(_top); }
+	ConstForwardIterator cbegin() const;
 
 };
 

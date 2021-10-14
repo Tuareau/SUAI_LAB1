@@ -3,12 +3,8 @@
 #define _KEEPER_H_
 
 #include "AbstractQueue.h"
-#include "Deque.h"
-#include "Stack.h"
-#include "ForwardList.h"
-
-#include "Element.h"
-#include "IInput.h"
+#include "ContainersFactory.h"
+#include "KeeperHandler.h"
 
 #include <iostream>
 #include <fstream>
@@ -16,37 +12,38 @@
 class Keeper
 {
 private:
-	const static size_t CONTAINERS = 3;
-	AbstractQueue * _containers[CONTAINERS];
-	bool _has_stack, _has_deque, _has_list;
+	ContainersFactory _factory;
+	AbstractQueue * _containers[AbstractQueue::CONTAINERS_COUNT];
+	AbstractKeeperHandler * _handler;
 
-	enum class ContainerType { DEQUE = 1, STACK, FORWARD_LIST, NONE };
-	AbstractQueue * find_container(ContainerType type) const;
+	void insert_container(AbstractQueue * container);
+	void erase_container(AbstractQueue::ContainerType type);
 
-	void add_container(AbstractQueue * container);
-	void delete_container(ContainerType type);
+	void print_type(AbstractQueue::ContainerType type) const;
 
+	bool empty() const;
 	void clear();
 
-	enum process_menu { ENQUEUE = 1, DEQUEUE, OUTPUT, END };
+	void add_container();
+	void remove_container();
 
-	void add();
-	void remove();
-	void save() const;
-	void load();
-	void output() const;
-	void process();
+	void process_enqueue();
+	void process_dequeue();
 
-	enum menu { ADD = 1, DELETE, SAVE, LOAD, PROCESS, QUIT };
+	void save_containers() const;
+	void load_containers();
+
+	void print_containers() const;
+	void process_containers();
 
 public:
-	Keeper();
+	Keeper() = delete;
+	explicit Keeper(AbstractKeeperHandler * handler);
 	Keeper(const Keeper &) = delete;
 	Keeper(Keeper &&) = delete;
 	~Keeper();
 
 	void run();
-
 };
 
 #endif
