@@ -141,7 +141,12 @@ void Keeper::process_enqueue() {
 		const auto element = _handler->get_element();
 		for (size_t i = 0; i < AbstractQueue::CONTAINERS_COUNT; ++i) {
 			if (_containers[i]) {
-				_containers[i]->push(element);
+				try {
+					_containers[i]->push(element);				
+				}
+				catch (std::invalid_argument & err) {
+					std::cout << "\nException catched: " << err.what() << std::endl;
+				}
 			}
 		}
 	}
